@@ -101,3 +101,5 @@
 
 // //change name
 //  export { functionToBeNamed }
+
+//remember to use Client.yourFunction to reference functions on different pages

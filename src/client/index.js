@@ -4,11 +4,11 @@
 
 // //import styles
 // //this style file will be deleted
-// import './styles/style.scss'
-// import './styles/base.scss'
-// import './styles/header.scss'
-// import './styles/footer.scss'
-// import './styles/form.scss'
+import './styles/style.scss'
+import './styles/base.scss'
+import './styles/header.scss'
+import './styles/footer.scss'
+import './styles/form.scss'
 
 // //export js
 // export {
