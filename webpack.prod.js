@@ -19,7 +19,18 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-            }
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [ { loader: 'file-loader' } ],
+                options: {
+                    publicPath: 'dist'
+                }
+            },
+            {
+                test: /\.html$/i,
+                loader: 'html-loader',
+              },
         ]
     },
     plugins: [
