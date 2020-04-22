@@ -19,6 +19,15 @@ module.exports = {
         new htmlWebpackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",
+        }),
+        new cleanWebpackPlugin({
+            //simulate the removal of files
+            dry: true,
+            //write logs to console
+            verbose: true,
+            //auto remove all unused webpack assets on rebuild
+            cleanStaleWebpackAssets: true,
+            protectWebpackAssets: false
         })
     ]
 }
