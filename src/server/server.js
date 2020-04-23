@@ -37,7 +37,7 @@ function listening() {
     console.log(`running on localhost: ${port}`);
 }
 
-//GET route that returns proejctData
+//GET route that returns projectData
 app.get('/all', getData);
 
 function getData(req, res) {
@@ -45,11 +45,11 @@ function getData(req, res) {
 }
 
 //POST route that adds incoming data to projectData
-app.post('/addData', addData);
+app.post('/addGeo', addGeo);
 
-function addData(req, res) {
-    projectData.temperature = req.body.temperature;
-    projectData.date = req.body.date;
-    projectData.userResponse = req.body.userResponse;
+function addGeo(req, res) {
+    projectData.latitude = req.body.latitude;
+    projectData.longitude = req.body.longitude;
+    projectData.country = req.body.countryCode;
     res.send(projectData);
 }

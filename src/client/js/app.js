@@ -6,64 +6,76 @@
 // const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 // const apiKey = '&APPID=de063bd15d383b20f99e0db333194bf8';
 
-// //POST request
-// const postData = async (url = '', data = {})=>{
-//     const response = await fetch(url, {
-//     method: 'POST',
-//     credentials: 'same-origin',
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data),
-// });
-//     try {
-//         const newData = await response.json();
-//         return newData;
-//     }catch(error) {
-//         console.log('error', error);
-//     }
-// }
 
-// //GET request to API
-// const getZip = async (baseURL, zip, key)=> {
-//     const res = await fetch(baseURL+zip+key);
-//     try {
-//         const userData = await res.json();
-//         return userData;
-//     } catch(error) {
-//         console.log('error', error);
-//     }
-// }
+//Geonames API (switch to .env?)
+const username = '&username=eosborne';
+const geonamesURL = 'http://api.geonames.org/postalCodeSearch?placename='
 
-// //access 'post' button and run 'execute' function when clicked
-// document.getElementById('generate').addEventListener('click', execute);
 
-// //retrieve data, then chain a POST request to add API data and user data to app
-// function execute(e) {
-//     const userZip = document.getElementById('zip').value;
-//     const userFeelings = document.getElementById('feelings').value;
 
-//     getZip(baseURL, userZip, apiKey)
+//POST request
+const postData = async (url = '', data = {})=>{
+    const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+});
+    try {
+        const newData = await response.json();
+        return newData;
+    }catch(error) {
+        console.log('error', error);
+    }
+}
+
+//GET request to API
+const getPosition = async (geonamesURL, placeName, username)=> {
+    const res = await fetch(geonamesURL+placeName+username);
+    try {
+        const userData = await res.json();
+        return userData;
+    } catch(error) {
+        console.log('error', error);
+    }
+}
+
+//access 'post' button and run 'execute' function when clicked
+//need to create this element (or update it it)
+document.getElementById('generate').addEventListener('click', execute);
+
+//retrieve data, then chain a POST request to add API data and user data to app
+function execute(e) {
+    //need to make this element
+    let placeName = document.getElementById('user-place').value;
+
+    // const userFeelings = document.getElementById('feelings').value;
+
+    getPosition(geonamesURL, placeName, username)
 
     
-//     //chain post request to add data from API
-//     .then(function(userData) {
-//         //add data to post request
-//         if (userZip) {
-//             let kelvinTemp = userData.main.temp;
-//             let imperialTemp = ((kelvinTemp - 273.15) * 9/5 + 32);
-//             let roundedTemp = Math.floor(imperialTemp);
-//             postData('/addData', {temperature: roundedTemp, date: newDate, userResponse: userFeelings});
-//         } else {
-//             postData('/addData', {temperature: 'mystery', date: newDate, userResponse: userFeelings});
-//         }
-//         })
-//         //update the UI dynamically
-//         .then(function() {
-//             updateUI()
-//          }
-//         )
-// }
+    //chain post request to add data from API
+    .then(function(userData) {
+        //add data to post request
+        // if (placeName) {
+            console.log(userData);
+            // let kelvinTemp = userData.main.temp;
+            // let imperialTemp = ((kelvinTemp - 273.15) * 9/5 + 32);
+            // let roundedTemp = Math.floor(imperialTemp);
+            postData('/addGeo', {latitude: userData.main.lat, longitude: userData.main.lng, country: userData.main.countryCode});
+        // } else {
+        //     postData('/addData', {temperature: 'mystery', date: newDate, userResponse: userFeelings});
+        // }
+        })
+        //update the UI dynamically
+        //////not updating the UI at this step, waiting to interact with more APIs
+        // .then(function() {
+        //     updateUI()
+        //  }
+        // )
+}
 
 // //retrieve data from the app, select necessary DOM elements, and update their values
 //  const updateUI = async () => {

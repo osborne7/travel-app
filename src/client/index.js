@@ -10,6 +10,12 @@ import './styles/header.scss'
 import './styles/footer.scss'
 import './styles/form.scss'
 
+
+//when needed, import files for file-loader, ex: import img from './file.png';
+
+//when needed, import html for html-loader, ex: import img from './file.png';
+
+
 // //export js
 // export {
 //     functionToBeNamed,
