@@ -11,17 +11,17 @@
 <body>
 <div id="app">
   <div class="user-input">
-    <div class="holder headline">MY WEATHER JOURNAL</div>
-    <div class="holder zip">
-      <label for="zip">enter zipcode here</label>
-      <input type="text" id="zip" placeholder="enter zip code here">
+    <!-- <div class="holder headline">MY WEATHER JOURNAL</div> -->
+    <div class="holder place">
+      <label for="place">enter destination here</label>
+      <input type="text" id="place" placeholder="enter destination here">
     </div>
-    <div class="holder feel">
-      <label for="feelings">how are you feeling today?</label>
-      <textarea class="myInput" id="feelings" placeholder="enter your feelings here" rows="10"></textarea>
+    <div class="holder date">
+      <label for="date">enter departure date here</label>
+      <input type="date" id="date" value="2017-06-01" rows="10">
     </div>
-  <button id="generate" type="submit">Post</button>
-  <div id="title">most recent entries</div>
+  <button id="generate" type="submit">Submit</button>
+  <div id="results">Results</div>
     <div id="contain-entries" class="holder entry">
       <div class="entry-holder">
         <div class="date response">03.22.2020</div> 

@@ -1,6 +1,7 @@
-// //just a template, these names will need to be changed
 // //import js
-// import { functionToBeNamed } from './js/app.js'
+import { postData } from './js/geonames.js'
+import { getPosition } from './js/geonames.js'
+import { execute } from './js/geonames.js'
 
 // //import styles
 // //this style file will be deleted
@@ -17,6 +18,9 @@ import './styles/form.scss'
 
 
 // //export js
-// export {
-//     functionToBeNamed,
-// }
+export {
+    postData,
+    getPosition,
+    execute
+
+}

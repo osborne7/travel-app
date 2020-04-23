@@ -1,17 +1,6 @@
-// //create a new date instance dynamically
-// let d = new Date();
-// let newDate = (d.getMonth()+ 1)+'.'+ d.getDate()+'.'+ d.getFullYear();
-
-// //API setup
-// const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-// const apiKey = '&APPID=de063bd15d383b20f99e0db333194bf8';
-
-
 //Geonames API (switch to .env?)
 const username = '&username=eosborne';
-const geonamesURL = 'http://api.geonames.org/postalCodeSearch?placename='
-
-
+const geonamesURL = 'http://api.geonames.org/postalCodeSearch?placename=';
 
 //POST request
 const postData = async (url = '', data = {})=>{
@@ -43,8 +32,8 @@ const getPosition = async (geonamesURL, placeName, username)=> {
 }
 
 //access 'post' button and run 'execute' function when clicked
-//need to create this element (or update it it)
-document.getElementById('generate').addEventListener('click', execute);
+//need to create this element (or update it it) (moved to eventListeners.js)
+// document.getElementById('generate').addEventListener('click', execute);
 
 //retrieve data, then chain a POST request to add API data and user data to app
 function execute(e) {
@@ -111,7 +100,4 @@ function execute(e) {
 //     }
 //  }           
 
-// //change name
-//  export { functionToBeNamed }
-
-//remember to use Client.yourFunction to reference functions on different pages
+export { postData, getPosition, execute }
