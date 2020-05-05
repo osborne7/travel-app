@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
 })
 
 // Setup Server
-const port = 8000;
+const port = 3000;
 
 const server = app.listen(port, listening);
 
@@ -45,11 +45,13 @@ function getData(req, res) {
 }
 
 //POST route that adds incoming data to projectData
-app.post('/addGeo', addGeo);
+app.post('/add', add);
 
-function addGeo(req, res) {
-    projectData.latitude = req.body.latitude;
-    projectData.longitude = req.body.longitude;
-    projectData.country = req.body.countryCode;
+function add(req, res) {
+    projectData.placeName = req.body.placeName;
+    projectData.departureDate = req.body.departureDate;
+    projectData.weather = req.body.weather;
+    projectData.summary = req.body.summary;
+    projectData.remainingDays = req.body.remainingDays;
     res.send(projectData);
 }

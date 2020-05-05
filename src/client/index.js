@@ -1,7 +1,8 @@
 // //import js
-import { postData } from './js/geonames.js'
-import { getPosition } from './js/geonames.js'
-import { execute } from './js/geonames.js'
+// import { postData } from './js/geonames.js'
+// import { getPosition } from './js/geonames.js'
+import { execute } from './js/apis.js/index.js'
+// import { submitButton } from './js/eventListeners'
 
 // //import styles
 // //this style file will be deleted
@@ -12,6 +13,9 @@ import './styles/footer.scss'
 import './styles/form.scss'
 
 
+document.getElementById('generate').addEventListener('click', execute);
+
+
 //when needed, import files for file-loader, ex: import img from './file.png';
 
 //when needed, import html for html-loader, ex: import img from './file.png';
@@ -19,8 +23,6 @@ import './styles/form.scss'
 
 // //export js
 export {
-    postData,
-    getPosition,
     execute
 
 }
