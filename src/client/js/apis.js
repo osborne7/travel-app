@@ -117,17 +117,17 @@ function execute(e) {
             const country = userData.geonames[0].countryName;
             console.log('country: ' + country);
 
-            let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
-            return weather;
+            // let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
+            // return weather;
 
             //how would it take in the date info, or do we just want that back?? probably just want to retrieve it? need to resolve
-            // if (remainingDays <= 7) {
-            //     let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
-            //     return weather;
-            // } else if (remainingDays > 7) {
-            //     weather = getFutureWeather(futureWeatherURL, latitude, longitude, weatherKey);
-            //     return weather;
-            // }
+            if (remainingDays <= 7) {
+                let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
+                return weather;
+            } else if (remainingDays > 7) {
+                let weather = getFutureWeather(futureWeatherURL, latitude, longitude, weatherKey);
+                return weather;
+            }
 
         }).then((weather) => {
             console.log('weather data: ' + weather)
