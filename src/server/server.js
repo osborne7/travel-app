@@ -53,6 +53,9 @@ function add(req, res) {
     projectData.departureDate = req.body.departureDate;
     projectData.temp = req.body.temp;
     projectData.summaryDescription = req.body.summaryDescription;
+    projectData.precipitation = req.body.precipitation;
+    projectData.highTemp = req.body.highTemp;
+    projectData.lowTemp = req.body.lowTemp;
     projectData.code = req.body.code;
     projectData.remainingDays = req.body.remainingDays;
     res.send(projectData);

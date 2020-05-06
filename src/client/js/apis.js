@@ -166,9 +166,12 @@ function execute(e) {
             console.log('summary description: ' + summaryDescription);
             const country = weather.country_code;
             let code = weather.data[0].weather.icon;
+            const precipitation = weather.data[0].precip;
+            const highTemp = weather.data[0].max_temp;
+            const lowTemp = weather.data[0].min_temp;
             console.log('country: ' + country);
             // apiData.summaryDescription = weather.data[0].weather.description;
-            apiData = postData('http://localhost:3000/add', {placeName: placeName, country: country, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, code: code, remainingDays: remainingDays});
+            apiData = postData('http://localhost:3000/add', {placeName: placeName, country: country, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
             console.log('apiData: ' + apiData);
             return apiData;
         }).then((apiData) => {
@@ -285,11 +288,32 @@ function execute(e) {
         iconEntry.setAttribute('src', `src/client/media/icons/${iconCode}.png`);
         tempEntry.insertAdjacentElement('afterend', iconEntry);
 
+        //create precipitation entry
+        let precipEntry = document.createElement('div');
+        precipEntry.className = 'precip response';
+        console.log('apiData.precipitation: ' + apiData.precipitation);
+        precipEntry.innerHTML = ('Precipitation: ' + apiData.precipitation);
+        iconEntry.insertAdjacentElement('afterend', precipEntry);
+
+        //create high temp entry
+        let highTempEntry = document.createElement('div');
+        highTempEntry.className = 'high-temp response';
+        console.log('apiData.highTemp: ' + apiData.highTemp);
+        highTempEntry.innerHTML = ('High Temperature: ' + apiData.highTemp);
+        precipEntry.insertAdjacentElement('afterend', highTempEntry);
+
+        //create high temp entry
+        let lowTempEntry = document.createElement('div');
+        highTempEntry.className = 'low-temp response';
+        console.log('apiData.highTemp: ' + apiData.lowTemp);
+        lowTempEntry.innerHTML = ('Low Temperature: ' + apiData.lowTemp);
+        highTempEntry.insertAdjacentElement('afterend', lowTempEntry);
+
         //create image entry
         let imageEntry = document.createElement('img');
         imageEntry.className = 'image response';
         imageEntry.setAttribute('src', pictureData.hits[0].webformatURL);
-        iconEntry.insertAdjacentElement('afterend', imageEntry);
+        lowTempEntry.insertAdjacentElement('afterend', imageEntry);
       } catch(error) {
         console.log('error', error);
     }

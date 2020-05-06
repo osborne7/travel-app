@@ -15,6 +15,12 @@ import './styles/form.scss'
 
 
 document.getElementById('generate').addEventListener('click', execute);
+// document.getElementById('return').addEventListener('enter', execute);
+document.getElementById('return').addEventListener('keypress', function (e) {
+    if (e.keyCode == 13) {
+        execute();
+    }
+}, false);
 
 
 //when needed, import files for file-loader, ex: import img from './file.png';
