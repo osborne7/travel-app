@@ -250,8 +250,12 @@ function execute(e) {
 
         let countryWarning = document.createElement('div');
         countryWarning.className = ('country response warning');
-        countryWarning.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that exists in multiple countries, try the search again with the country included!';
-        countryEntry.insertAdjacentElement('afterend', countryWarning);
+        countryWarning.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that shares a name with cities in other countries, try the search again with the country included!';
+        let warningIcon = document.createElement('img');
+        warningIcon.className = ('country response icon');
+        warningIcon.setAttribute('src', 'src/client/media/img/info.png');
+        countryEntry.insertAdjacentElement('afterend', warningIcon);
+        warningIcon.insertAdjacentElement('afterend', countryWarning);
 
         //create new days until departure entry
         let daysLeftEntry = document.createElement('div');
