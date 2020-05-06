@@ -1,4 +1,4 @@
-import { getCountryName } from './countryCodes';
+// import { getCountryName } from './countryCodes';
 //API keys (switch to .env?)
 const username = '&username=eosborne';
 const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
@@ -51,7 +51,7 @@ const getPosition = async (geonamesURL, placeName, username)=> {
 //it gives out date in YYYY-MM-DD
 // temp gets average temp, pop is probability of precipitation, weather gives an icon and description, 
 const getCurrentWeather = async(currentWeatherURL, latitude, longitude, weatherKey)=> {
-        const req = await fetch(currentWeatherURL+ 'lat=' + latitude + '&lon='+ longitude + '&key='+ weatherKey);
+        const req = await fetch(currentWeatherURL+ 'lat=' + latitude + '&lon='+ longitude + '&key='+ weatherKey + '&units=I');
         try {
             const weatherData = await req.json();
             console.log(weatherData);
@@ -62,7 +62,7 @@ const getCurrentWeather = async(currentWeatherURL, latitude, longitude, weatherK
 }
 
 const getFutureWeather = async(futureWeatherURL, latitude, longitude, weatherKey)=> {
-    const req = await fetch(futureWeatherURL+ 'lat=' + latitude + '&lon='+ longitude + '&key='+ weatherKey);
+    const req = await fetch(futureWeatherURL+ 'lat=' + latitude + '&lon='+ longitude + '&key='+ weatherKey+ '&units=I');
     try {
         //change const name
         const weatherData = await req.json();
@@ -137,9 +137,10 @@ function execute(e) {
             const summaryDescription = weather.data[0].weather.description;
             console.log('summary description: ' + summaryDescription);
             const country = weather.country_code;
+            let code = weather.data[0].weather.icon;
             console.log('country: ' + country);
             // apiData.summaryDescription = weather.data[0].weather.description;
-            apiData = postData('http://localhost:3000/add', {placeName: placeName, country: country, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, remainingDays: remainingDays});
+            apiData = postData('http://localhost:3000/add', {placeName: placeName, country: country, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, code: code, remainingDays: remainingDays});
             console.log('apiData: ' + apiData);
             return apiData;
         }).then((apiData) => {
@@ -158,8 +159,10 @@ function execute(e) {
 
     //convert country code to full country name
     let fullCountryName = Client.getCountryName(apiData.country);
+    let replaceCountrySpaces = fullCountryName.split(' ').join('+');
     console.log('full Country Name: ' + fullCountryName);
-    const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + fullCountryName + '&image_type=photo&pretty=true&category=travel');
+    console.log('replace country spaces: ' +replaceCountrySpaces);
+    const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
 
     try{
         const pictureData = await res.json();
@@ -167,6 +170,18 @@ function execute(e) {
 
                 //double check all these when updating HTML/css
         //create new date entry
+
+        //add this to a different js page and import
+        const formatDate = function(input) {
+            var pattern = /(\d{4})\-(\d{2})\-(\d{2})/;
+            if (!input || !input.match(pattern)) {
+              return null;
+            }
+            return input.replace(pattern, '$2/$3/$1');
+          };
+
+          let newDate = formatDate(apiData.departureDate);
+
         let newDiv = document.createElement('div');
         newDiv.className = 'entry-holder';
         let container = document.getElementById('contain-entries');
@@ -174,7 +189,7 @@ function execute(e) {
         let dateEntry = document.createElement('div');
         dateEntry.className = 'date response';
         // const departureDate = document.getElementById('date').value;
-        dateEntry.innerHTML = ('Departure date: ' + apiData.departureDate);
+        dateEntry.innerHTML = ('Departure date: ' + newDate);
         newDiv.insertAdjacentElement('afterbegin', dateEntry);
 
         //create new city entry
@@ -189,17 +204,22 @@ function execute(e) {
         countryEntry.innerHTML = ('Country: ' + fullCountryName);
         cityEntry.insertAdjacentElement('afterend', countryEntry);
 
+        let countryWarning = document.createElement('div');
+        countryWarning.className = ('country response warning');
+        countryWarning.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that exists in multiple countries, try the search again with the country included!';
+        countryEntry.insertAdjacentElement('afterend', countryWarning);
+
         //create new days until departure entry
         let daysLeftEntry = document.createElement('div');
         daysLeftEntry.className = 'days response';
         daysLeftEntry.innerHTML = 'Days until your departure: ' + apiData.remainingDays;
-        countryEntry.insertAdjacentElement('afterend', daysLeftEntry);
+        countryWarning.insertAdjacentElement('afterend', daysLeftEntry);
 
         //create weather temperature entry
         let weatherEntry = document.createElement('div');
         weatherEntry.className = 'temp response';
         console.log('apiData.temp: ' + apiData.temp);
-        weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp);
+        weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp + '&#176; F');
         daysLeftEntry.insertAdjacentElement('afterend', weatherEntry);
 
 
@@ -210,12 +230,21 @@ function execute(e) {
         tempEntry.innerHTML = ('General forecast at destination: ' + apiData.summaryDescription);
         weatherEntry.insertAdjacentElement('afterend', tempEntry);
 
+        // create icon entry
+        // media/icons/{icon_code}.png
+        let iconEntry = document.createElement('img');
+        iconEntry.className = 'icon response';
+        let iconCode = apiData.code;
+        console.log('apiData.iconCode: ' + iconCode);
+        iconEntry.setAttribute('src', `src/client/media/icons/${iconCode}.png`);
+        tempEntry.insertAdjacentElement('afterend', iconEntry);
+
 
         //create image entry
         let imageEntry = document.createElement('img');
         imageEntry.className = 'image response';
         imageEntry.setAttribute('src', pictureData.hits[0].webformatURL);
-        tempEntry.insertAdjacentElement('afterend', imageEntry);
+        iconEntry.insertAdjacentElement('afterend', imageEntry);
       } catch(error) {
         console.log('error', error);
     }
