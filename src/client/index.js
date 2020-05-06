@@ -2,6 +2,7 @@
 // import { postData } from './js/geonames.js'
 // import { getPosition } from './js/geonames.js'
 import { execute } from './js/apis.js'
+import { getCountryName } from './js/countryCodes.js'
 // import { submitButton } from './js/eventListeners'
 
 // //import styles
@@ -23,6 +24,8 @@ document.getElementById('generate').addEventListener('click', execute);
 
 // //export js
 export {
-    execute
+
+    execute,
+    getCountryName
 
 }

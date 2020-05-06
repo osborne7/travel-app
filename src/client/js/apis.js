@@ -1,3 +1,4 @@
+import { getCountryName } from './countryCodes';
 //API keys (switch to .env?)
 const username = '&username=eosborne';
 const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
@@ -135,8 +136,10 @@ function execute(e) {
             console.log('temp: ' + temp);
             const summaryDescription = weather.data[0].weather.description;
             console.log('summary description: ' + summaryDescription);
+            const country = weather.country_code;
+            console.log('country: ' + country);
             // apiData.summaryDescription = weather.data[0].weather.description;
-            apiData = postData('http://localhost:3000/add', {placeName: placeName, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, remainingDays: remainingDays});
+            apiData = postData('http://localhost:3000/add', {placeName: placeName, country: country, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, remainingDays: remainingDays});
             console.log('apiData: ' + apiData);
             return apiData;
         }).then((apiData) => {
@@ -149,16 +152,20 @@ function execute(e) {
     // q= has to be separated by + symbols if multiple words, check this
     console.log('current place value before grabbing picture: ' + document.getElementById('place').value)
     let currentPlace = document.getElementById('place').value;
+    console.log('current country from apiData: ' + apiData.country);
     let replaceSpaces = currentPlace.split(' ').join('+');
     console.log('replaceSpaces: ' + replaceSpaces);
-    const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '&image_type=photo&pretty=true');
+
+    //convert country code to full country name
+    let fullCountryName = Client.getCountryName(apiData.country);
+    console.log('full Country Name: ' + fullCountryName);
+    const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + fullCountryName + '&image_type=photo&pretty=true&category=travel');
 
     try{
         const pictureData = await res.json();
         console.log(pictureData);
-        // console.log(pictureData.hits[0].webformatURL);
 
-                //double check all these when updating HTML
+                //double check all these when updating HTML/css
         //create new date entry
         let newDiv = document.createElement('div');
         newDiv.className = 'entry-holder';
@@ -176,11 +183,17 @@ function execute(e) {
         cityEntry.innerHTML = ('Destination: ' + apiData.placeName);
         dateEntry.insertAdjacentElement('afterend', cityEntry);
 
+        //create new country entry
+        let countryEntry = document.createElement('div');
+        countryEntry.className = 'country response';
+        countryEntry.innerHTML = ('Country: ' + fullCountryName);
+        cityEntry.insertAdjacentElement('afterend', countryEntry);
+
         //create new days until departure entry
         let daysLeftEntry = document.createElement('div');
         daysLeftEntry.className = 'days response';
         daysLeftEntry.innerHTML = 'Days until your departure: ' + apiData.remainingDays;
-        cityEntry.insertAdjacentElement('afterend', daysLeftEntry);
+        countryEntry.insertAdjacentElement('afterend', daysLeftEntry);
 
         //create weather temperature entry
         let weatherEntry = document.createElement('div');
