@@ -9,7 +9,7 @@ const pictureKey = '4809663-f2765ed7f184d8a809cca9b66';
 const pictureURL = 'https://pixabay.com/api/?key=';
 // let placeName = document.getElementById('place').value;
 // https://cors-anywhere.herokuapp.com/
-
+const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
 let apiData = {};
 
 
@@ -74,8 +74,36 @@ const getFutureWeather = async(futureWeatherURL, latitude, longitude, weatherKey
 }
 
 // const getPicture = async(pictureURL, pictureKey, placeName)=> {
-//     // q= might have to be separated by + symbols if multiple words, check this
-//     const req = await fetch(pictureURL + pictureKey + '$q=' + placeName + '&image_type=photo');
+    // console.log('current place value before grabbing picture: ' + document.getElementById('place').value)
+    // let currentPlace = document.getElementById('place').value;
+    // console.log('current country from apiData: ' + apiData.country);
+    // let replaceSpaces = currentPlace.split(' ').join('+');
+    // console.log('replaceSpaces: ' + replaceSpaces);
+
+    // //convert country code to full country name
+    // let fullCountryName = Client.getCountryName(apiData.country);
+    // let replaceCountrySpaces = fullCountryName.split(' ').join('+');
+    // console.log('full Country Name: ' + fullCountryName);
+    // console.log('replace country spaces: ' +replaceCountrySpaces);
+    // const req = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
+//     try {
+//         const pictureData = await req.json();
+//         console.log(pictureData);
+//         return pictureData;
+//     } catch(error) {
+//         console.log('error', error);
+// }
+// }
+
+// const getCountryPicture = async(pictureURL, pictureKey, placeName)=> {
+   // console.log('current country from apiData: ' + apiData.country);
+
+    // //convert country code to full country name
+    // let fullCountryName = Client.getCountryName(apiData.country);
+    // let replaceCountrySpaces = fullCountryName.split(' ').join('+');
+    // console.log('full Country Name: ' + fullCountryName);
+    // console.log('replace country spaces: ' +replaceCountrySpaces);
+    // const req = await fetch(pictureURL + pictureKey + '&q=' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
 //     try {
 //         const pictureData = await req.json();
 //         console.log(pictureData);
@@ -93,7 +121,7 @@ function execute(e) {
       let d = new Date();
       let now = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
       console.log('now: ' + now);
-      const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
+    //   const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
       console.log(daysDifference(now, departureDate));
       let remainingDays = daysDifference(now, departureDate);
       console.log('remaining days: ' + remainingDays);
@@ -166,7 +194,7 @@ function execute(e) {
 
     try{
         const pictureData = await res.json();
-        console.log(pictureData);
+        console.log('pictureData: ' + pictureData);
 
                 //double check all these when updating HTML/css
         //create new date entry
@@ -191,12 +219,28 @@ function execute(e) {
         // const departureDate = document.getElementById('date').value;
         dateEntry.innerHTML = ('Departure date: ' + newDate);
         newDiv.insertAdjacentElement('afterbegin', dateEntry);
+        
+        //return date entry
+        let returnEntry = document.createElement('div');
+        returnEntry.className = 'date response';
+        const returnDate = document.getElementById('return').value;
+        console.log('return date: ' + returnDate);
+        returnEntry.innerHTML = ('Return date: ' + formatDate(returnDate));
+        dateEntry.insertAdjacentElement('afterend', returnEntry);
+
+        //duration entry
+
+        let durationEntry = document.createElement('div');
+        durationEntry.className = 'duration response';
+        const duration = (`Trip duration: ${daysDifference(returnDate, apiData.departureDate)} days`);
+        durationEntry.innerHTML = duration;
+        returnEntry.insertAdjacentElement('afterend', durationEntry);
 
         //create new city entry
         let cityEntry = document.createElement('div');
         cityEntry.className = 'city response';
         cityEntry.innerHTML = ('Destination: ' + apiData.placeName);
-        dateEntry.insertAdjacentElement('afterend', cityEntry);
+        durationEntry.insertAdjacentElement('afterend', cityEntry);
 
         //create new country entry
         let countryEntry = document.createElement('div');
@@ -222,7 +266,6 @@ function execute(e) {
         weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp + '&#176; F');
         daysLeftEntry.insertAdjacentElement('afterend', weatherEntry);
 
-
         //create summary entry
         let tempEntry = document.createElement('div');
         tempEntry.className = 'weather response';
@@ -231,14 +274,12 @@ function execute(e) {
         weatherEntry.insertAdjacentElement('afterend', tempEntry);
 
         // create icon entry
-        // media/icons/{icon_code}.png
         let iconEntry = document.createElement('img');
         iconEntry.className = 'icon response';
         let iconCode = apiData.code;
         console.log('apiData.iconCode: ' + iconCode);
         iconEntry.setAttribute('src', `src/client/media/icons/${iconCode}.png`);
         tempEntry.insertAdjacentElement('afterend', iconEntry);
-
 
         //create image entry
         let imageEntry = document.createElement('img');
