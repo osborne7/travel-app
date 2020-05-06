@@ -1,7 +1,7 @@
 // //import js
 // import { postData } from './js/geonames.js'
 // import { getPosition } from './js/geonames.js'
-import { execute } from './js/apis.js/index.js'
+import { execute } from './js/apis.js'
 // import { submitButton } from './js/eventListeners'
 
 // //import styles

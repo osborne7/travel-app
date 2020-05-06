@@ -50,8 +50,8 @@ app.post('/add', add);
 function add(req, res) {
     projectData.placeName = req.body.placeName;
     projectData.departureDate = req.body.departureDate;
-    projectData.weather = req.body.weather;
-    projectData.summary = req.body.summary;
+    projectData.temp = req.body.temp;
+    projectData.summaryDescription = req.body.summaryDescription;
     projectData.remainingDays = req.body.remainingDays;
     res.send(projectData);
 }

@@ -9,7 +9,6 @@ const pictureURL = 'https://pixabay.com/api/?key=';
 // let placeName = document.getElementById('place').value;
 // https://cors-anywhere.herokuapp.com/
 
-let apiData = {};
 
 
 //POST request
@@ -30,7 +29,7 @@ const postData = async (url = '', data = {})=>{
     }
 }
 
-//GET request to API
+//GET request to Geonames API
 const getPosition = async (geonamesURL, placeName, username)=> {
     // let placeName = document.getElementById('place').value;
     console.log(placeName);
@@ -88,20 +87,20 @@ const getFutureWeather = async(futureWeatherURL, latitude, longitude, weatherKey
 function execute(e) {
     let placeName = document.getElementById('place').value;
     const departureDate = document.getElementById('date').value;
-      //rework date:
-      let d = new Date();
-      let now = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
-      console.log('now: ' + now);
-      const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
-      console.log(daysDifference(now, departureDate));
-      let remainingDays = daysDifference(now, departureDate);
-      console.log('remaining days: ' + remainingDays);
-  
-      // let timeDifference = Math.abs((new Date(departureDate)).getTime() - (new Date()).getTime);
-      // let remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-      console.log('departure date: ' + departureDate)
-      // console.log('timeDifference: ' + timeDifference);
-      // console.log('remainingDays: ' + remainingDays);
+    //rework date:
+    let d = new Date();
+    let now = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+    console.log('now: ' + now);
+    const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
+    console.log(daysDifference(now, departureDate));
+    let remainingDays = daysDifference(now, departureDate);
+    console.log('remaining days: ' + remainingDays);
+
+    // let timeDifference = Math.abs((new Date(departureDate)).getTime() - (new Date()).getTime);
+    // let remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    console.log('departure date: ' + departureDate)
+    // console.log('timeDifference: ' + timeDifference);
+    // console.log('remainingDays: ' + remainingDays);
 
     getPosition(geonamesURL, placeName, username)
     
@@ -118,6 +117,7 @@ function execute(e) {
             console.log('country: ' + country);
 
             let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
+            // (console.log(weather.data[0].temp));
             return weather;
 
             //how would it take in the date info, or do we just want that back?? probably just want to retrieve it? need to resolve
@@ -133,10 +133,9 @@ function execute(e) {
             console.log('weather data: ' + weather)
             const temp = weather.data[0].temp;
             console.log('temp: ' + temp);
-            const summaryDescription = weather.data[0].weather.description;
-            console.log('summary description: ' + summaryDescription);
-            // apiData.summaryDescription = weather.data[0].weather.description;
-            apiData = postData('http://localhost:3000/add', {placeName: placeName, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, remainingDays: remainingDays});
+            const summary = weather.data[0].weather;
+            console.log('summary: ' + summary);
+            const apiData = postData('http://localhost:3000/add', {placeName: placeName, departureDate: departureDate, temp: temp, summary: summary, remainingDays: remainingDays});
             console.log('apiData: ' + apiData);
             return apiData;
         }).then((apiData) => {
@@ -148,17 +147,13 @@ function execute(e) {
  const updateUI = async (apiData) => {
     // q= has to be separated by + symbols if multiple words, check this
     console.log('current place value before grabbing picture: ' + document.getElementById('place').value)
-    let currentPlace = document.getElementById('place').value;
-    let replaceSpaces = currentPlace.split(' ').join('+');
-    console.log('replaceSpaces: ' + replaceSpaces);
-    const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '&image_type=photo&pretty=true');
+    const request = await fetch(pictureURL + pictureKey + '&q=' + document.getElementById('place').value + '&image_type=photo&pretty=true');
 
     try{
-        const pictureData = await res.json();
-        console.log(pictureData);
-        // console.log(pictureData.hits[0].webformatURL);
+        const pictureData = await request.json();
+        console.log('pictureData: ' + pictureData);
 
-                //double check all these when updating HTML
+        //double check all these when updating HTML
         //create new date entry
         let newDiv = document.createElement('div');
         newDiv.className = 'entry-holder';
@@ -182,27 +177,26 @@ function execute(e) {
         daysLeftEntry.innerHTML = 'Days until your departure: ' + apiData.remainingDays;
         cityEntry.insertAdjacentElement('afterend', daysLeftEntry);
 
-        //create weather temperature entry
+        //create weather summary entry
         let weatherEntry = document.createElement('div');
-        weatherEntry.className = 'temp response';
-        console.log('apiData.temp: ' + apiData.temp);
+        weatherEntry.className = 'weather response';
         weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp);
         daysLeftEntry.insertAdjacentElement('afterend', weatherEntry);
 
 
-        //create summary entry
+        //create temperature entry
         let tempEntry = document.createElement('div');
-        tempEntry.className = 'weather response';
-        console.log('apiData.summaryDescription: ' + apiData.summaryDescription);
-        tempEntry.innerHTML = ('General forecast at destination: ' + apiData.summaryDescription);
+        tempEntry.className = 'temp response';
+        tempEntry.innerHTML = ('General forecast at destination: ' + apiData.summary);
         weatherEntry.insertAdjacentElement('afterend', tempEntry);
 
 
         //create image entry
-        let imageEntry = document.createElement('img');
+        let imageEntry = document.createElement('div');
         imageEntry.className = 'image response';
-        imageEntry.setAttribute('src', pictureData.hits[0].webformatURL);
+        imageEntry.setAttribute('src', pictureData.hits[0].webFormatURL);
         tempEntry.insertAdjacentElement('afterend', imageEntry);
+
       } catch(error) {
         console.log('error', error);
     }
