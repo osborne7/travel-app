@@ -3,7 +3,7 @@
 // import { getPosition } from './js/geonames.js'
 import { execute } from './js/apis.js'
 import { getCountryName } from './js/countryCodes.js'
-import { formatDate } from './js/formatDate'
+import { formatDate } from './js/formatDate.js'
 // import { submitButton } from './js/eventListeners'
 
 // //import styles
