@@ -229,7 +229,7 @@ const isoCountries = {
     'UG' : 'Uganda',
     'UA' : 'Ukraine',
     'AE' : 'United Arab Emirates',
-    'GB' : 'United Kingdom',
+    'GB' : 'UK',
     'US' : 'USA',
     'UM' : 'United States Outlying Islands',
     'UY' : 'Uruguay',
