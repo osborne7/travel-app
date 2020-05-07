@@ -3,6 +3,7 @@
 // import { getPosition } from './js/geonames.js'
 import { execute } from './js/apis.js'
 import { getCountryName } from './js/countryCodes.js'
+import { formatDate } from './js/formatDate'
 // import { submitButton } from './js/eventListeners'
 
 // //import styles
@@ -32,6 +33,7 @@ document.getElementById('return').addEventListener('keypress', function (e) {
 export {
 
     execute,
-    getCountryName
+    getCountryName,
+    formatDate
 
 }

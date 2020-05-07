@@ -199,19 +199,9 @@ function execute(e) {
         const pictureData = await res.json();
         console.log('pictureData: ' + pictureData);
 
-                //double check all these when updating HTML/css
+        //double check all these when updating HTML/css
         //create new date entry
-
-        //add this to a different js page and import
-        const formatDate = function(input) {
-            var pattern = /(\d{4})\-(\d{2})\-(\d{2})/;
-            if (!input || !input.match(pattern)) {
-              return null;
-            }
-            return input.replace(pattern, '$2/$3/$1');
-          };
-
-          let newDate = formatDate(apiData.departureDate);
+        let newDate = Client.formatDate(apiData.departureDate);
 
         let newDiv = document.createElement('div');
         newDiv.className = 'entry-holder';
