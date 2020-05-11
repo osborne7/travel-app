@@ -4,6 +4,10 @@
 import { execute } from './js/apis.js'
 import { getCountryName } from './js/countryCodes.js'
 import { formatDate } from './js/formatDate.js'
+// import { daysDifference } from './js/daysToDeparture.js'
+import { defineI } from './js/utilityFunctions.js'
+import { selectCountryCode } from './js/utilityFunctions.js'
+
 // import { submitButton } from './js/eventListeners'
 
 // //import styles
@@ -34,6 +38,8 @@ export {
 
     execute,
     getCountryName,
-    formatDate
+    formatDate,
+    defineI,
+    selectCountryCode
 
 }

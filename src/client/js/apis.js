@@ -1,4 +1,4 @@
-// import { getCountryName } from './countryCodes';
+import { formatDate } from './formatDate.js';
 //API keys (switch to .env?)
 const username = '&username=eosborne';
 const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
@@ -7,10 +7,12 @@ const futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily?';
 const currentWeatherURL = 'http://api.weatherbit.io/v2.0/current?';
 const pictureKey = '4809663-f2765ed7f184d8a809cca9b66';
 const pictureURL = 'https://pixabay.com/api/?key=';
-// let placeName = document.getElementById('place').value;
-// https://cors-anywhere.herokuapp.com/
+const container = document.getElementById('contain-entries');
+
 const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
 let apiData = {};
+    let fullCountryName;
+    let replaceCountrySpaces;
 
 
 //POST request
@@ -73,46 +75,6 @@ const getFutureWeather = async(futureWeatherURL, latitude, longitude, weatherKey
 }
 }
 
-// const getPicture = async(pictureURL, pictureKey, placeName)=> {
-    // console.log('current place value before grabbing picture: ' + document.getElementById('place').value)
-    // let currentPlace = document.getElementById('place').value;
-    // console.log('current country from apiData: ' + apiData.country);
-    // let replaceSpaces = currentPlace.split(' ').join('+');
-    // console.log('replaceSpaces: ' + replaceSpaces);
-
-    // //convert country code to full country name
-    // let fullCountryName = Client.getCountryName(apiData.country);
-    // let replaceCountrySpaces = fullCountryName.split(' ').join('+');
-    // console.log('full Country Name: ' + fullCountryName);
-    // console.log('replace country spaces: ' +replaceCountrySpaces);
-    // const req = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
-//     try {
-//         const pictureData = await req.json();
-//         console.log(pictureData);
-//         return pictureData;
-//     } catch(error) {
-//         console.log('error', error);
-// }
-// }
-
-// const getCountryPicture = async(pictureURL, pictureKey, placeName)=> {
-   // console.log('current country from apiData: ' + apiData.country);
-
-    // //convert country code to full country name
-    // let fullCountryName = Client.getCountryName(apiData.country);
-    // let replaceCountrySpaces = fullCountryName.split(' ').join('+');
-    // console.log('full Country Name: ' + fullCountryName);
-    // console.log('replace country spaces: ' +replaceCountrySpaces);
-    // const req = await fetch(pictureURL + pictureKey + '&q=' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
-//     try {
-//         const pictureData = await req.json();
-//         console.log(pictureData);
-//         return pictureData;
-//     } catch(error) {
-//         console.log('error', error);
-// }
-// }
-
 //retrieve data, then chain a POST request to add API data and user data to app
 function execute(e) {
     let placeName = document.getElementById('place').value;
@@ -146,27 +108,29 @@ function execute(e) {
             const country = userData.geonames[0].countryName;
             console.log('country: ' + country);
 
-            // let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
-            // return weather;
-
-            //how would it take in the date info, or do we just want that back?? probably just want to retrieve it? need to resolve
             if (remainingDays <= 7) {
                 let weather = getCurrentWeather(currentWeatherURL, latitude, longitude, weatherKey);
+                let i = 0;
                 return weather;
             } else if (remainingDays > 7) {
+                let i = 15;
                 let weather = getFutureWeather(futureWeatherURL, latitude, longitude, weatherKey);
                 return weather;
             }
 
-        }).then((weather) => {
-            console.log('weather data: ' + weather)
+        })
+        .then((weather) => {
+            console.log('weather data: ' + weather);
+            let newI = Client.defineI(remainingDays);
+            console.log('new1: ' + newI);
             const temp = weather.data[0].temp;
             console.log('temp: ' + temp);
             const summaryDescription = weather.data[0].weather.description;
             console.log('summary description: ' + summaryDescription);
-            const country = weather.country_code;
+            let country = Client.selectCountryCode(newI, weather);
+            // let country = weather.data[0].country_code;
             let code = weather.data[0].weather.icon;
-            const precipitation = weather.data[0].precip;
+            const precipitation = weather.data[0].pop;
             const highTemp = weather.data[0].max_temp;
             const lowTemp = weather.data[0].min_temp;
             console.log('country: ' + country);
@@ -176,6 +140,7 @@ function execute(e) {
             return apiData;
         }).then((apiData) => {
             updateUI(apiData);
+            // getCountryPicture(apiData);
         })
 }
 
@@ -193,11 +158,25 @@ function execute(e) {
     let replaceCountrySpaces = fullCountryName.split(' ').join('+');
     console.log('full Country Name: ' + fullCountryName);
     console.log('replace country spaces: ' +replaceCountrySpaces);
+    // get city picture
     const res = await fetch(pictureURL + pictureKey + '&q=' + replaceSpaces + '+' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
 
     try{
         const pictureData = await res.json();
         console.log('pictureData: ' + pictureData);
+        // get country picture if there are no pictures available of city
+        if (pictureData.hits[0] === undefined) {
+            console.log('pictureData was undefined');
+            const res = await fetch(pictureURL + pictureKey + '&q=' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
+            let countryPictureData = await res.json();
+            console.log(countryPictureData);
+
+            // getCountryPicture(pictureURL, pictureKey, replaceCountrySpaces);
+                let countryImageEntry = document.createElement('img');
+                countryImageEntry.className = 'image response';
+                countryImageEntry.setAttribute('src', countryPictureData.hits[0].webformatURL);
+                container.insertAdjacentElement('afterbegin', countryImageEntry);
+        }
 
         //double check all these when updating HTML/css
         //create new date entry
@@ -205,13 +184,20 @@ function execute(e) {
 
         let newDiv = document.createElement('div');
         newDiv.className = 'entry-holder';
-        let container = document.getElementById('contain-entries');
+        // let container = document.getElementById('contain-entries');
         container.insertAdjacentElement('afterbegin', newDiv);
+
+
         let dateEntry = document.createElement('div');
         dateEntry.className = 'date response';
         // const departureDate = document.getElementById('date').value;
         dateEntry.innerHTML = ('Departure date: ' + newDate);
         newDiv.insertAdjacentElement('afterbegin', dateEntry);
+
+        //create your trip header
+        let tripResults = document.createElement('h1');
+        tripResults.innerHTML = 'Your Trip';
+        dateEntry.insertAdjacentElement('beforebegin', tripResults);
         
         //return date entry
         let returnEntry = document.createElement('div');
@@ -244,11 +230,11 @@ function execute(e) {
         let countryWarning = document.createElement('div');
         countryWarning.className = ('country response warning');
         countryWarning.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that shares a name with cities in other countries, try the search again with the country included!';
-        let warningIcon = document.createElement('img');
-        warningIcon.className = ('country response icon');
-        warningIcon.setAttribute('src', 'src/client/media/img/info.png');
-        countryEntry.insertAdjacentElement('afterend', warningIcon);
-        warningIcon.insertAdjacentElement('afterend', countryWarning);
+        let questionIcon = document.createElement('img');
+        questionIcon.className = ('country response icon');
+        questionIcon.setAttribute('src', 'src/client/media/img/question.png');
+        countryEntry.insertAdjacentElement('afterend', questionIcon);
+        questionIcon.insertAdjacentElement('afterend', countryWarning);
 
         //create new days until departure entry
         let daysLeftEntry = document.createElement('div');
@@ -256,19 +242,28 @@ function execute(e) {
         daysLeftEntry.innerHTML = 'Days until your departure: ' + apiData.remainingDays;
         countryWarning.insertAdjacentElement('afterend', daysLeftEntry);
 
-        //create weather temperature entry
+        //create weather temperature entry - do something here to let know that the farthest out forecast is 16days from now
         let weatherEntry = document.createElement('div');
         weatherEntry.className = 'temp response';
         console.log('apiData.temp: ' + apiData.temp);
         weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp + '&#176; F');
         daysLeftEntry.insertAdjacentElement('afterend', weatherEntry);
 
+        let weatherWarning = document.createElement('div');
+        weatherWarning.className = ('weather response warning');
+        weatherWarning.innerHTML = 'Is your trip more than 16 days in the future? The weather results will show the forecast for 16 days from now, the last day we can get a reliable forecast.';
+        let warningIcon = document.createElement('img');
+        warningIcon.className = ('weather response icon');
+        warningIcon.setAttribute('src', 'src/client/media/img/info.png');
+        weatherEntry.insertAdjacentElement('afterend', warningIcon);
+        warningIcon.insertAdjacentElement('afterend', weatherWarning);
+
         //create summary entry
         let tempEntry = document.createElement('div');
         tempEntry.className = 'weather response';
         console.log('apiData.summaryDescription: ' + apiData.summaryDescription);
         tempEntry.innerHTML = ('General forecast at destination: ' + apiData.summaryDescription);
-        weatherEntry.insertAdjacentElement('afterend', tempEntry);
+        weatherWarning.insertAdjacentElement('afterend', tempEntry);
 
         // create icon entry
         let iconEntry = document.createElement('img');
@@ -282,7 +277,7 @@ function execute(e) {
         let precipEntry = document.createElement('div');
         precipEntry.className = 'precip response';
         console.log('apiData.precipitation: ' + apiData.precipitation);
-        precipEntry.innerHTML = ('Precipitation: ' + apiData.precipitation);
+        precipEntry.innerHTML = (`Chance of Precipitation: ${apiData.precipitation}%`);
         iconEntry.insertAdjacentElement('afterend', precipEntry);
 
         //create high temp entry
@@ -294,7 +289,7 @@ function execute(e) {
 
         //create high temp entry
         let lowTempEntry = document.createElement('div');
-        highTempEntry.className = 'low-temp response';
+        lowTempEntry.className = 'low-temp response';
         console.log('apiData.highTemp: ' + apiData.lowTemp);
         lowTempEntry.innerHTML = ('Low Temperature: ' + apiData.lowTemp);
         highTempEntry.insertAdjacentElement('afterend', lowTempEntry);
