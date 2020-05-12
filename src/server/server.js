@@ -48,8 +48,9 @@ function getData(req, res) {
 app.post('/add', add);
 
 function add(req, res) {
-    projectData.placeName = req.body.placeName;
+    // projectData.placeName = req.body.placeName;
     projectData.country = req.body.country;
+    projectData.city = req.body.city;
     projectData.departureDate = req.body.departureDate;
     projectData.temp = req.body.temp;
     projectData.summaryDescription = req.body.summaryDescription;

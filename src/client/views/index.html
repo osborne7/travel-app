@@ -5,30 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>TravelMate</title>
-  <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bubbler+One&family=Darker+Grotesque&family=Love+Ya+Like+A+Sister&family=Major+Mono+Display&family=Montserrat&family=Pacifico&family=Zilla+Slab+Highlight&display=swap" rel="stylesheet">
 </head>
-
 <body>
 <div id="app">
-  <div class="user-input">
-    <!-- <div class="holder headline">MY WEATHER JOURNAL</div> -->
-    <div class="holder place">
-      <label for="place">enter destination here</label>
-      <input type="text" id="place" placeholder="enter destination here">
-    </div>
-    <div class="holder date">
-      <label for="date">enter departure date here</label>
-      <input type="date" id="date" value="2020-06-01" rows="10">
-    </div>
-    <div class="holder return">
-      <label for="date">enter return date here</label>
-      <input type="date" id="return" value="2020-06-12" rows="10">
-    </div>
-  <button id="generate" type="submit">Submit</button>
-  <div id="contain-entries"></div>
+  <section class="title-holder">
+      <img src="../media/img/map.png" alt="" class="map">
+      <h1 class="title">TravelMate</h1>
+  </section>
+  <h3 class="description">Enter your travel destination and dates to view weather and trip information!</h3>
+  <section class="head">
+    <div class="user-input">
+      <div class="holder place">
+        <label for="place">destination:</label>
+        <input type="text" id="place" placeholder="enter destination here">
+      </div>
+      <div class="holder date">
+        <label for="date">departure date:</label>
+        <input type="date" id="date" value="2020-06-01" rows="10">
+      </div>
+      <div class="holder return">
+        <label for="date">return date:</label>
+        <input type="date" id="return" value="2020-06-12" rows="10">
       </div>
     </div>
-  </div>
-</div>
+    <button id="generate" type="submit">submit</button>
+  </section>
+
+  <section id="contain-entries"></div>
+  </section>
 </body>
 </html>

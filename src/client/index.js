@@ -7,6 +7,7 @@ import { formatDate } from './js/formatDate.js'
 // import { daysDifference } from './js/daysToDeparture.js'
 import { defineI } from './js/utilityFunctions.js'
 import { selectCountryCode } from './js/utilityFunctions.js'
+import { selectCityName } from './js/utilityFunctions.js'
 
 // import { submitButton } from './js/eventListeners'
 
@@ -27,6 +28,10 @@ document.getElementById('return').addEventListener('keypress', function (e) {
     }
 }, false);
 
+// document.getElementsByClassName('warning-icon').addEventListener('mouseover', (e) => {
+//     e.classList.toggle('hide');
+// })
+
 
 //when needed, import files for file-loader, ex: import img from './file.png';
 
@@ -40,6 +45,7 @@ export {
     getCountryName,
     formatDate,
     defineI,
-    selectCountryCode
+    selectCountryCode,
+    selectCityName
 
 }

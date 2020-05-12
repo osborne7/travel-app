@@ -1,0 +1,121 @@
+$primary-font: 'Pacifico', cursive;
+// $alt-font: 'Love Ya Like A Sister', cursive;
+$secondary-font: 'Montserrat', sans-serif;
+// $alt-secondary-font: 'Bubbler One', sans-serif;
+$third-primary-font: 'Major Mono Display', monospace;
+$third-secondary-font: 'Darker Grotesque', sans-serif;
+$header-font: 'Zilla Slab Highlight', cursive;
+
+body {
+    font-family: $secondary-font;
+    font-size: 1.2em;
+    // background-color: rgba(234, 237, 237, 0.3);
+}
+
+.head {
+    display: flex;
+    justify-content: space-evenly;
+    // padding: 3em 0em;
+    // align-content: center;
+    border: 1.5px #1E88E5 solid;
+    max-width: 80%;
+    margin: 1em auto;
+    padding: 2em;
+    border-radius: 3em;
+
+}
+
+.title-holder {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 2em auto;
+    padding: 1em;
+}
+
+.title {
+    font-size: 3.5em;
+    font-family: $third-primary-font;
+    // text-align: center;
+    // display: inline;
+    // padding-bottom: 3em;
+    // padding: 1.5em 0em;
+}
+
+.map {
+    // display: inline;
+    height: 5em;
+    align-self: center;
+    // display: inline;
+    // width: auto;
+}
+
+.description {
+    text-align: center;
+    padding: .5em 0em;
+    margin-top: 2em;
+
+}
+
+.user-input {
+    // margin-right: 6em;
+    align-self: center;
+}
+
+#generate {
+    align-self: center;
+    height: 4em;
+    width: 8em;
+    border-radius: 1em;
+    background-color: #0D47A1;
+    color: white;
+    font-family: $third-primary-font;
+    font-size: 1em;
+    // padding: 5em 0em;
+    // &:hover {
+    //     background-color: #61c1a1;
+    //     cursor: pointer;
+    // }
+    transition: all .3s;
+}
+
+#generate:hover {
+    background-color: #1976D2;
+
+    cursor: pointer;
+}
+
+#generate:focus {
+    outline: #B2EBF2 dotted 1px;
+    box-shadow: none;
+    // background-color: #03A9F4;
+    // background-color: #03A9F4;
+    // cursor: progress;
+
+    // background-color: #039BE5;
+}
+
+.holder {
+    padding: .6em;
+    & label {
+        padding: .5em;
+    } 
+    // margin-right: 1em;
+}
+
+input {
+    padding: 0.5em;
+    font-family: $secondary-font;
+    // color: gray;;
+    border: 1px solid #26C6DA;
+    // border-radius: .5em;
+}
+
+#place {
+    width: 45%;
+}
+
+// textarea, input { 
+//     outline: none; 
+// }

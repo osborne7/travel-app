@@ -19,5 +19,15 @@ function selectCountryCode(number, weather) {
         }
 }
 
+function selectCityName(number, weather) {
+    if (number === 15) {
+            let country = weather.city_name;
+            return country;
+        } else {
+            let country = weather.data[0].city_name;            
+            return country;
+        }
+}
 
-export { defineI, selectCountryCode }
+
+export { defineI, selectCountryCode, selectCityName }
