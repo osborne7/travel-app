@@ -1,5 +1,5 @@
 //if departure date is less than a week away, return i = 0, otherwise i = 15 in order to use i as the index for pulling in weather data
-function defineI(days) {
+let defineI = (days) => {
     if (days <= 7) {
         let i = 0;
         return i;
@@ -9,7 +9,8 @@ function defineI(days) {
     }
 }
 
-function selectCountryCode(number, weather) {
+//future weather and current weather API calls have different criteria to access country code and city name, use i to make correct selection
+let selectCountryCode = (number, weather) => {
     if (number === 15) {
             let country = weather.country_code;
             return country;
@@ -19,7 +20,7 @@ function selectCountryCode(number, weather) {
         }
 }
 
-function selectCityName(number, weather) {
+let selectCityName = (number, weather) => {
     if (number === 15) {
             let country = weather.city_name;
             return country;
@@ -28,6 +29,5 @@ function selectCityName(number, weather) {
             return country;
         }
 }
-
 
 export { defineI, selectCountryCode, selectCityName }

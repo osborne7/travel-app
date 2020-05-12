@@ -1,3 +1,4 @@
+//take in country code from API and return full country name
 const isoCountries = {
     'AF' : 'Afghanistan',
     'AX' : 'Aland Islands',
@@ -246,7 +247,7 @@ const isoCountries = {
     'ZW' : 'Zimbabwe'
 };
 
-function getCountryName (countryCode) {
+let getCountryName = (countryCode) => {
     if (isoCountries.hasOwnProperty(countryCode)) {
         return isoCountries[countryCode];
     } else {

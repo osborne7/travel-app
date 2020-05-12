@@ -1,44 +1,25 @@
 // //import js
-// import { postData } from './js/geonames.js'
-// import { getPosition } from './js/geonames.js'
 import { execute } from './js/apis.js'
 import { getCountryName } from './js/countryCodes.js'
 import { formatDate } from './js/formatDate.js'
-// import { daysDifference } from './js/daysToDeparture.js'
 import { defineI } from './js/utilityFunctions.js'
 import { selectCountryCode } from './js/utilityFunctions.js'
 import { selectCityName } from './js/utilityFunctions.js'
 
-// import { submitButton } from './js/eventListeners'
+//import styles
+import './styles/head.scss'
+import './styles/results.scss'
 
-// //import styles
-// //this style file will be deleted
-import './styles/style.scss'
-import './styles/base.scss'
-import './styles/header.scss'
-import './styles/footer.scss'
-import './styles/form.scss'
-
-
+//get results when submit button is clicked
 document.getElementById('generate').addEventListener('click', execute);
-// document.getElementById('return').addEventListener('enter', execute);
-document.getElementById('return').addEventListener('keypress', function (e) {
+//get results when user presses return on 'return date' field
+document.getElementById('return').addEventListener('keypress', (e) => {
     if (e.keyCode == 13) {
         execute();
     }
 }, false);
 
-// document.getElementsByClassName('warning-icon').addEventListener('mouseover', (e) => {
-//     e.classList.toggle('hide');
-// })
-
-
-//when needed, import files for file-loader, ex: import img from './file.png';
-
-//when needed, import html for html-loader, ex: import img from './file.png';
-
-
-// //export js
+//export js
 export {
 
     execute,
