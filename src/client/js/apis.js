@@ -1,9 +1,9 @@
 //API keys
 const username = '&username=eosborne';
-const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
+const geonamesURL = 'https://api.geonames.org/searchJSON?q=';
 const weatherKey = '14ad34da755e4660a9e02f687016bf9c';
-const futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily?';
-const currentWeatherURL = 'http://api.weatherbit.io/v2.0/current?';
+const futureWeatherURL = 'https://api.weatherbit.io/v2.0/forecast/daily?';
+const currentWeatherURL = 'https://api.weatherbit.io/v2.0/current?';
 const pictureKey = '4809663-f2765ed7f184d8a809cca9b66';
 const pictureURL = 'https://pixabay.com/api/?key=';
 const container = document.getElementById('contain-entries');
@@ -332,7 +332,7 @@ function execute(e) {
             behavior: 'smooth',
             block: 'start'
         });
-        
+
       } catch(error) {
         console.log('error', error);
     }
