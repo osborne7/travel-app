@@ -60,3 +60,10 @@ function add(req, res) {
     projectData.remainingDays = req.body.remainingDays;
     res.send(projectData);
 }
+
+//for jest test
+const sum = (a, b) => {
+	return a + b;
+  }
+  
+module.exports = sum; 

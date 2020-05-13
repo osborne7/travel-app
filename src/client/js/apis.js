@@ -1,14 +1,25 @@
 //API keys
 const username = '&username=eosborne';
-const geonamesURL = 'https://secure.geonames.org/searchJSON?q=';
+const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
 const weatherKey = '14ad34da755e4660a9e02f687016bf9c';
-const futureWeatherURL = 'https://api.weatherbit.io/v2.0/forecast/daily?';
-const currentWeatherURL = 'https://api.weatherbit.io/v2.0/current?';
+const futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily?';
+const currentWeatherURL = 'http://api.weatherbit.io/v2.0/current?';
 const pictureKey = '4809663-f2765ed7f184d8a809cca9b66';
 const pictureURL = 'https://pixabay.com/api/?key=';
 const container = document.getElementById('contain-entries');
 const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
 let apiData = {};
+
+
+//put icons into images folder within dist folder for production mode
+require.context("../media/icons/", true, /\.(png|svg|jpg|gif)$/);
+
+//import photos
+import destination from '../media/img/destination.png';
+import travel from '../media/img/travel.png'
+import question from '../media/img/question.png'
+import weather from '../media/img/weather.png'
+import info from '../media/img/info.png'
 
 //POST request
 const postData = async (url = '', data = {}) => {
@@ -57,7 +68,6 @@ const getFutureWeather = async(futureWeatherURL, latitude, longitude, weatherKey
     try {
         //change const name
         const weatherData = await req.json();
-        console.log(weatherData);
         return weatherData;
     } catch(error) {
         console.log('error', error);
@@ -151,7 +161,7 @@ function execute(e) {
         //add travel icon
         let travelIcon = document.createElement('img');
         travelIcon.className = ('travel-icon icon');
-        travelIcon.setAttribute('src', 'src/client/media/img/travel.png');
+        travelIcon.setAttribute('src', travel);
         destinationHeader.insertAdjacentElement('beforebegin', travelIcon);
 
         // get country picture if there are no pictures available of city, add picture to UI
@@ -183,7 +193,7 @@ function execute(e) {
         //add trip icon
         let tripIcon = document.createElement('img');
         tripIcon.className = ('side-icon icon');
-        tripIcon.setAttribute('src', 'src/client/media/img/destination.png');
+        tripIcon.setAttribute('src', destination);
         tripHeader.insertAdjacentElement('beforebegin', tripIcon);
 
         //add trip container
@@ -233,7 +243,7 @@ function execute(e) {
         let countryWarning = document.createElement('div');
         let questionIcon = document.createElement('img');
         questionIcon.className = ('country warning-icon warning response');
-        questionIcon.setAttribute('src', 'src/client/media/img/question.png');
+        questionIcon.setAttribute('src', question);
         countryEntry.insertAdjacentElement('afterend', questionIcon);
         questionIcon.insertAdjacentElement('afterend', countryWarning);
 
@@ -262,7 +272,7 @@ function execute(e) {
         //weather icon
         let weatherIcon = document.createElement('img');
         weatherIcon.className = ('side-icon response icon');
-        weatherIcon.setAttribute('src', 'src/client/media/img/weather.png');
+        weatherIcon.setAttribute('src', weather);
         weatherHeader.insertAdjacentElement('beforebegin', weatherIcon);
 
         //weather sub-container
@@ -286,7 +296,7 @@ function execute(e) {
         let iconEntry = document.createElement('img');
         iconEntry.className = 'weather-icon response';
         let iconCode = apiData.code;
-        iconEntry.setAttribute('src', `src/client/media/icons/${iconCode}.png`);
+        iconEntry.setAttribute('src', `/images/${iconCode}.png`);
         tempEntry.insertAdjacentElement('afterend', iconEntry);
 
         //precipitation entry
@@ -311,7 +321,7 @@ function execute(e) {
         let weatherWarning = document.createElement('div');
         let warningIcon = document.createElement('img');
         warningIcon.className = ('weather response warning-icon warning');
-        warningIcon.setAttribute('src', 'src/client/media/img/info.png');
+        warningIcon.setAttribute('src', info);
         lowTempEntry.insertAdjacentElement('afterend', warningIcon);
         warningIcon.insertAdjacentElement('afterend', weatherWarning);
 
@@ -332,7 +342,7 @@ function execute(e) {
             behavior: 'smooth',
             block: 'start'
         });
-
+        
       } catch(error) {
         console.log('error', error);
     }
