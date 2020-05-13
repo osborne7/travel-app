@@ -10,7 +10,6 @@ const container = document.getElementById('contain-entries');
 const daysDifference = (date1, date2) => Math.ceil(Math.abs(new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24));
 let apiData = {};
 
-
 //put icons into images folder within dist folder for production mode
 require.context("../media/icons/", true, /\.(png|svg|jpg|gif)$/);
 
