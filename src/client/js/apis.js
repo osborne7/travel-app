@@ -19,6 +19,7 @@ import travel from '../media/img/travel.png'
 import question from '../media/img/question.png'
 import weather from '../media/img/weather.png'
 import info from '../media/img/info.png'
+import { mouseIn } from './utilityFunctions';
 
 //POST request
 const postData = async (url = '', data = {}) => {
@@ -247,15 +248,8 @@ function execute(e) {
         questionIcon.insertAdjacentElement('afterend', countryWarning);
 
         //hover functionality
-        questionIcon.addEventListener('mouseover', () => {
-            countryWarning.className = ('country warning warning-text');
-            countryWarning.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that shares a name with cities in other countries, try the search again with the country included!';
-        });
-
-        questionIcon.addEventListener('mouseout', () => {
-            countryWarning.classList.remove('warning-text');
-            countryWarning.innerHTML = '';
-        });
+        Client.mouseInCountry(questionIcon, countryWarning);
+        Client.mouseOut(questionIcon, countryWarning);
 
         //weather flex container
         let weatherFlex = document.createElement('div');
@@ -325,16 +319,9 @@ function execute(e) {
         warningIcon.insertAdjacentElement('afterend', weatherWarning);
 
         //hover functionality
-        warningIcon.addEventListener('mouseover', () => {
-            weatherWarning.className = ('weather warning warning-text');
-            weatherWarning.innerHTML = 'Is your trip more than 16 days in the future? The weather results will show the forecast for 16 days from now, the last day we can get a reliable forecast.';
-        });
-
-        warningIcon.addEventListener('mouseout', () => {
-            weatherWarning.classList.remove('warning-text');
-            weatherWarning.innerHTML = '';
-        });
-
+        Client.mouseInWeather(warningIcon, weatherWarning);
+        Client.mouseOut(warningIcon, weatherWarning);
+        
         //scroll to results once loaded
         let scrollTo = document.getElementById('contain-entries');
         scrollTo.scrollIntoView({

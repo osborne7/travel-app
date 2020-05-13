@@ -30,4 +30,21 @@ let selectCityName = (number, weather) => {
         }
 }
 
-export { defineI, selectCountryCode, selectCityName }
+//hover functionality for 
+let mouseInCountry = (icon, element) => icon.addEventListener('mouseover', () => {
+    element.className = ('country warning warning-text');
+    element.innerHTML = 'Is the country not what you expected? If you plan to travel to a city that shares a name with cities in other countries, try the search again with the country included!';
+});
+
+let mouseInWeather = (icon, element) => icon.addEventListener('mouseover', () => {
+    element.className = ('weather warning warning-text');
+    element.innerHTML = 'Is your trip more than 16 days in the future? The weather results will show the forecast for 16 days from now, the last day we can get a reliable forecast.';
+});
+
+let mouseOut = (icon, element) => icon.addEventListener('mouseout', () => {
+    element.classList.remove('warning-text');
+    element.innerHTML = '';
+});
+
+
+export { defineI, selectCountryCode, selectCityName, mouseInCountry, mouseInWeather, mouseOut }

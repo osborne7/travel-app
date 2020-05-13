@@ -5,6 +5,9 @@ import { formatDate } from './js/formatDate.js'
 import { defineI } from './js/utilityFunctions.js'
 import { selectCountryCode } from './js/utilityFunctions.js'
 import { selectCityName } from './js/utilityFunctions.js'
+import { mouseInCountry } from './js/utilityFunctions.js'
+import { mouseInWeather} from './js/utilityFunctions.js'
+import { mouseOut } from './js/utilityFunctions.js'
 
 //import styles
 import './styles/head.scss'
@@ -27,6 +30,9 @@ export {
     formatDate,
     defineI,
     selectCountryCode,
-    selectCityName
+    selectCityName,
+    mouseInCountry,
+    mouseInWeather,
+    mouseOut
 
 }
