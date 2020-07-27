@@ -1,6 +1,6 @@
 //API keys
 const username = '&username=eosborne';
-const geonamesURL = 'http://api.geonames.org/searchJSON?q=';
+const geonamesURL = 'https://secure.geonames.org/searchJSON?q=';
 const weatherKey = '14ad34da755e4660a9e02f687016bf9c';
 const futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily?';
 const currentWeatherURL = 'http://api.weatherbit.io/v2.0/current?';
