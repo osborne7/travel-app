@@ -118,8 +118,8 @@ function execute(e) {
         const precipitation = weather.data[0].pop;
         const highTemp = weather.data[0].max_temp;
         const lowTemp = weather.data[0].min_temp;
-        const port = process.env.PORT || 3000
-        apiData = postData('http://localhost:3000/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
+        apiData = postData('/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
+        // apiData = postData('http://localhost:3000/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
         return apiData;
     }).then((apiData) => {
         updateUI(apiData);
