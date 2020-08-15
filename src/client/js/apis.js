@@ -108,6 +108,7 @@ function execute(e) {
         }
     })
     .then((weather) => {
+        console.log(weather);
         //newI is the index to use to pull in data based on days until departure
         let newI = Client.defineI(remainingDays);
         const temp = weather.data[0].temp;
