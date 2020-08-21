@@ -38,3 +38,7 @@ Added functionality:
 ## Testing
 
 Testing is set up with Jest, run `npm test` to run the current tests
+
+## Deployment
+
+Site is deployed on Heroku at: https://travel-mate-2020.herokuapp.com/
