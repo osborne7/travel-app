@@ -110,6 +110,11 @@ function execute(e) {
     })
     .then((weather) => {
         console.log(weather);
+
+        // let accessData = (data) => {
+        //     return `weather.data[0].${data}`;
+        // }
+
         //newI is the index to use to pull in data based on days until departure
         let newI = Client.defineI(remainingDays);
         const temp = weather.data[0].temp;
@@ -117,11 +122,18 @@ function execute(e) {
         let country = Client.selectCountryCode(newI, weather);
         let city = Client.selectCityName(newI, weather);
         let code = weather.data[0].weather.icon;
-        const precipitation = weather.data[0].pop;
-        const highTemp = weather.data[0].max_temp;
-        const lowTemp = weather.data[0].min_temp;
+        const windSpeed = weather.data[0].wind_spd;
+        const windDirection = weather.data[0].wind_cdir_full;
+        const humidity = weather.data[0].rh;
+        console.log(humidity);
+        const clouds = weather.data[0].clouds;
+
+        // console.log(accessData('rh'));
+        // const precipitation = weather.data[0].pop;
+        // const highTemp = weather.data[0].max_temp;
+        // const lowTemp = weather.data[0].min_temp;
         // apiData = postData('/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
-        apiData = postData('http://localhost:3000/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
+        apiData = postData('http://localhost:3000/add', {country: country, city: city, departureData: departureDate, temp: temp, summaryDescription: summaryDescription, windSpeed: windSpeed, windDirection: windDirection, humidity: humidity, clouds: clouds, code: code, remainingDays: remainingDays});
         return apiData;
     }).then((apiData) => {
         updateUI(apiData);
@@ -144,7 +156,19 @@ function execute(e) {
         const pictureData = await res.json();
 
         //create new date entry
-        let newDate = Client.formatDate(apiData.departureDate);
+        // let newDate = Client.formatDate(apiData.departureDate);
+        let date = document.getElementById('date').value;
+        let newDate = Client.formatDate(date);
+        const returnDate = document.getElementById('return').value;
+
+        //insertDiv function
+        let insertDiv = (addClass, addID, text, prevElement, location) => {
+            let newDiv = document.createElement('div');
+            newDiv.className = `${addClass} response`;
+            newDiv.id = addID;
+            newDiv.innerHTML = `${text}`;
+            prevElement.insertAdjacentElement(location, newDiv);
+        }
 
         //add containers
         let newDiv = document.createElement('div');
@@ -205,42 +229,29 @@ function execute(e) {
         tripHeader.insertAdjacentElement('afterend', tripContainer);
 
         //date entry
-        let dateEntry = document.createElement('div');
-        dateEntry.className = 'date response';
-        dateEntry.innerHTML = ('Departure date: ' + newDate);
-        tripContainer.insertAdjacentElement('afterbegin', dateEntry);
-        
-        //return date entry
-        let returnEntry = document.createElement('div');
-        returnEntry.className = 'date response';
-        const returnDate = document.getElementById('return').value;
-        returnEntry.innerHTML = ('Return date: ' + Client.formatDate(returnDate));
-        dateEntry.insertAdjacentElement('afterend', returnEntry);
+        insertDiv('date', 'departureDate', 'Departure date: ' + newDate, tripContainer, 'afterbegin');
+        let dateEntry = document.getElementById('departureDate');
 
-         //days until departure entry
-         let daysLeftEntry = document.createElement('div');
-         daysLeftEntry.className = 'days response';
-         daysLeftEntry.innerHTML = 'Days until your departure: ' + apiData.remainingDays;
-         returnEntry.insertAdjacentElement('afterend', daysLeftEntry);
+        //return date entry
+        insertDiv('date', 'returnDate', 'Return date: ' + Client.formatDate(returnDate), dateEntry, 'afterend');
+        let returnEntry = document.getElementById('returnDate');
+
+        //days until departure entry
+        insertDiv('days', 'daysLeft', 'Days until your departure: ' + apiData.remainingDays, returnEntry, 'afterend');
+        let daysLeftEntry = document.getElementById('daysLeft');
 
         //duration entry
-        let durationEntry = document.createElement('div');
-        durationEntry.className = 'duration response';
-        const duration = (`Trip duration: ${daysDifference(returnDate, apiData.departureDate)} days`);
-        durationEntry.innerHTML = duration;
-        daysLeftEntry.insertAdjacentElement('afterend', durationEntry);
+        const duration = (`Trip duration: ${daysDifference(returnDate, newDate)} days`);
+        insertDiv('duration', 'duration', duration, daysLeftEntry, 'afterend');
+        let durationEntry = document.getElementById('duration');
 
         //city entry
-        let cityEntry = document.createElement('div');
-        cityEntry.className = 'city response';
-        cityEntry.innerHTML = ('Destination: ' + apiData.city);
-        durationEntry.insertAdjacentElement('afterend', cityEntry);
+        insertDiv('city', 'cityEntry', 'Destination: ' + apiData.city, durationEntry, 'afterend');
+        let cityEntry = document.getElementById('cityEntry');
 
         //country entry
-        let countryEntry = document.createElement('div');
-        countryEntry.className = 'country response';
-        countryEntry.innerHTML = ('Country: ' + fullCountryName);
-        cityEntry.insertAdjacentElement('afterend', countryEntry);
+        insertDiv('country', 'countryEntry', 'Country: ' + fullCountryName, cityEntry, 'afterend');
+        let countryEntry = document.getElementById('countryEntry');
 
         //country hover-warning and icon
         let countryWarning = document.createElement('div');
@@ -277,16 +288,12 @@ function execute(e) {
         weatherHeader.insertAdjacentElement('afterend', weatherContainer);
 
         //temperature entry
-        let weatherEntry = document.createElement('div');
-        weatherEntry.className = 'temp response';
-        weatherEntry.innerHTML = ('Temperature at destination: ' + apiData.temp + '&#176; F');
-        weatherContainer.insertAdjacentElement('afterbegin', weatherEntry);
+        insertDiv('temp', 'tempEntry', 'Temperature at destination: ' + apiData.temp + '&#176; F', weatherContainer, 'afterbegin');
+        let weatherEntry = document.getElementById('tempEntry');
 
         //weather summary entry
-        let tempEntry = document.createElement('div');
-        tempEntry.className = 'weather response';
-        tempEntry.innerHTML = ('General forecast at destination: ' + apiData.summaryDescription);
-        weatherEntry.insertAdjacentElement('afterend', tempEntry);
+        insertDiv('weather', 'weatherEntry', 'General forecast at destination: ' + apiData.summaryDescription, weatherEntry, 'afterend');
+        let tempEntry = document.getElementById('weatherEntry');
 
         //weather icon entry
         let iconEntry = document.createElement('img');
@@ -295,30 +302,28 @@ function execute(e) {
         iconEntry.setAttribute('src', `/images/${iconCode}.png`);
         tempEntry.insertAdjacentElement('afterend', iconEntry);
 
-        //precipitation entry
-        let precipEntry = document.createElement('div');
-        precipEntry.className = 'precip response';
-        precipEntry.innerHTML = (`Chance of Precipitation: ${apiData.precipitation}%`);
-        iconEntry.insertAdjacentElement('afterend', precipEntry);
+        //wind speed entry
+        insertDiv('wind', 'windSpeed', 'Wind Speed: ' + apiData.windSpeed + ' mph', iconEntry, 'afterend');
+        let windSpeedEntry = document.getElementById('windSpeed');
 
-        //high temp entry
-        let highTempEntry = document.createElement('div');
-        highTempEntry.className = 'high-temp response';
-        highTempEntry.innerHTML = ('High Temperature: ' + apiData.highTemp + '&#176; F');
-        precipEntry.insertAdjacentElement('afterend', highTempEntry);
+        //wind direction entry
+        insertDiv('wind', 'windDirection', 'Wind Direction: ' + apiData.windDirection, windSpeedEntry, 'afterend');
+        let windDirectionEntry = document.getElementById('windDirection');
 
-        //high temp entry
-        let lowTempEntry = document.createElement('div');
-        lowTempEntry.className = 'low-temp response';
-        lowTempEntry.innerHTML = ('Low Temperature: ' + apiData.lowTemp) + '&#176; F';
-        highTempEntry.insertAdjacentElement('afterend', lowTempEntry);
+        //humidity entry
+        insertDiv('humidity', 'humidityEntry', 'Relative Humidity: ' + apiData.humidity + '%', windDirectionEntry, 'afterend');
+        let humidityEntry = document.getElementById('humidityEntry');
+
+        //clouds entry
+        insertDiv('clouds', 'cloudsEntry', 'Cloud Coverage: ' + apiData.clouds + '%', humidityEntry, 'afterend');
+        let cloudsEntry = document.getElementById('cloudsEntry');
 
         //weather warning entry and icon
         let weatherWarning = document.createElement('div');
         let warningIcon = document.createElement('img');
         warningIcon.className = ('weather response warning-icon warning');
         warningIcon.setAttribute('src', info);
-        lowTempEntry.insertAdjacentElement('afterend', warningIcon);
+        cloudsEntry.insertAdjacentElement('afterend', warningIcon);
         warningIcon.insertAdjacentElement('afterend', weatherWarning);
 
         //hover functionality

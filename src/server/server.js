@@ -28,7 +28,9 @@ app.get('/', function (req, res) {
 })
 
 // Setup Server
-const port = process.env.PORT || 3000;
+//change back when ready for heroku re-deploy
+// const port = process.env.PORT || 3000;
+const port = 3000;
 
 const server = app.listen(port, listening);
 
@@ -47,15 +49,28 @@ function getData(req, res) {
 //POST route that adds incoming data to projectData
 app.post('/add', add);
 
+// apiData = postData('http://localhost:3000/add', {country, city, departureDate, temp, summaryDescription, windSpeed, windDirection, humidity, clouds, code: code, remainingDays: remainingDays});
+
+
 function add(req, res) {
+    // const addData = (data) => {
+    //     const keys = Object.keys(data);
+    //     keys.map(val => {
+    //         return `projectData.${val} = req.body.${val}`;
+    //     })
+    // }
+    // apiData = postData('http://localhost:3000/add', {country: country, city: city, departureData: departureDate, temp: temp, summaryDescription: summaryDescription, windSpeed: windSpeed, windDirection: windDirection, humidity: humidity, clouds: clouds, code: code, remainingDays: remainingDays});
+
+    
     projectData.country = req.body.country;
     projectData.city = req.body.city;
     projectData.departureDate = req.body.departureDate;
     projectData.temp = req.body.temp;
     projectData.summaryDescription = req.body.summaryDescription;
-    projectData.precipitation = req.body.precipitation;
-    projectData.highTemp = req.body.highTemp;
-    projectData.lowTemp = req.body.lowTemp;
+    projectData.windSpeed = req.body.windSpeed;
+    projectData.windDirection = req.body.windDirection;
+    projectData.humidity = req.body.humidity;
+    projectData.clouds = req.body.clouds;
     projectData.code = req.body.code;
     projectData.remainingDays = req.body.remainingDays;
     res.send(projectData);
