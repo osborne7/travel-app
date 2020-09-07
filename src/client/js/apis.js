@@ -170,14 +170,29 @@ function execute(e) {
             prevElement.insertAdjacentElement(location, newDiv);
         }
 
-        //add containers
-        let newDiv = document.createElement('div');
-        newDiv.className = 'entry-holder';
-        container.insertAdjacentElement('afterbegin', newDiv);
+        //insertContainer function
+        let insertContainer = (addClass, addID, prevElement, location) => {
+            let newContainer = document.createElement('div');
+            newContainer.className = addClass;
+            newContainer.id = addID;
+            prevElement.insertAdjacentElement(location, newContainer);
+        }
 
-        let destinationContainer = document.createElement('div');
-        destinationContainer.className = 'destination-container';
-        newDiv.insertAdjacentElement('afterbegin', destinationContainer);
+        // add containers
+        // let newDiv = document.createElement('div');
+        // newDiv.className = 'entry-holder';
+        // container.insertAdjacentElement('afterbegin', newDiv);
+
+        insertContainer('entry-holder', 'entryHolder', container, 'afterbegin');
+        let entryHolder = document.getElementById('entryHolder');
+
+
+        insertContainer('destination-container', 'destinationContainer', entryHolder, 'afterbegin');
+        let destinationContainer = document.getElementById('destinationContainer');
+
+        // let destinationContainer = document.createElement('div');
+        // destinationContainer.className = 'destination-container';
+        // entryHolder.insertAdjacentElement('afterbegin', destinationContainer);
 
         //add destination header
         let destinationHeader = document.createElement('h1');
@@ -207,9 +222,13 @@ function execute(e) {
         }
 
         //add flex container for trip
-        let tripFlex = document.createElement('div');
-        tripFlex.className = 'flex-container trip-flex';
-        destinationContainer.insertAdjacentElement('afterend', tripFlex);
+        // let tripFlex = document.createElement('div');
+        // tripFlex.className = 'flex-container trip-flex';
+        // destinationContainer.insertAdjacentElement('afterend', tripFlex);
+
+        insertContainer('flex-container', 'tripFlex', destinationContainer, 'afterend');
+        let tripFlex = document.getElementById('tripFlex');
+
 
         //create 'your trip' header
         let tripHeader = document.createElement('h1');
@@ -224,9 +243,12 @@ function execute(e) {
         tripHeader.insertAdjacentElement('beforebegin', tripIcon);
 
         //add trip container
-        let tripContainer = document.createElement('div');
-        tripContainer.className = 'sub-container trip-container';
-        tripHeader.insertAdjacentElement('afterend', tripContainer);
+        // let tripContainer = document.createElement('div');
+        // tripContainer.className = 'sub-container trip-container';
+        // tripHeader.insertAdjacentElement('afterend', tripContainer);
+
+        insertContainer('sub-container', 'tripContainer', tripHeader, 'afterend');
+        let tripContainer = document.getElementById('tripContainer');
 
         //date entry
         insertDiv('date', 'departureDate', 'Departure date: ' + newDate, tripContainer, 'afterbegin');
@@ -266,9 +288,12 @@ function execute(e) {
         Client.mouseOut(questionIcon, countryWarning);
 
         //weather flex container
-        let weatherFlex = document.createElement('div');
-        weatherFlex.className = 'flex-container weather-flex';
-        tripFlex.insertAdjacentElement('afterend', weatherFlex);
+        insertContainer('flex-container', 'weatherFlex', tripFlex, 'afterend');
+        let weatherFlex = document.getElementById('weatherFlex');
+
+        // let weatherFlex = document.createElement('div');
+        // weatherFlex.className = 'flex-container weather-flex';
+        // tripFlex.insertAdjacentElement('afterend', weatherFlex);
 
         //weather header
         let weatherHeader = document.createElement('h1');
@@ -283,9 +308,12 @@ function execute(e) {
         weatherHeader.insertAdjacentElement('beforebegin', weatherIcon);
 
         //weather sub-container
-        let weatherContainer = document.createElement('div');
-        weatherContainer.className = 'sub-container weather-container';
-        weatherHeader.insertAdjacentElement('afterend', weatherContainer);
+        insertContainer('sub-container', 'weatherContainer', weatherHeader, 'afterend');
+        let weatherContainer = document.getElementById('weatherContainer');
+
+        // let weatherContainer = document.createElement('div');
+        // weatherContainer.className = 'sub-container weather-container';
+        // weatherHeader.insertAdjacentElement('afterend', weatherContainer);
 
         //temperature entry
         insertDiv('temp', 'tempEntry', 'Temperature at destination: ' + apiData.temp + '&#176; F', weatherContainer, 'afterbegin');
