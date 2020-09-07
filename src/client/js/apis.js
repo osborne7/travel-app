@@ -291,7 +291,7 @@ function execute(e) {
         let windDirectionEntry = document.getElementById('windDirection');
 
         //humidity entry
-        insertElement('div', 'humidity response', 'humidityEntry', 'Relative Humidity: ' + apiData.humidity + '%', windDirectionEntry, 'afterend');
+        insertElement('div', 'humidity response', 'humidityEntry', 'Relative Humidity: ' + Math.floor(apiData.humidity) + '%', windDirectionEntry, 'afterend');
         let humidityEntry = document.getElementById('humidityEntry');
 
         //clouds entry
