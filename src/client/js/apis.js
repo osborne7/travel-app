@@ -125,7 +125,13 @@ function execute(e) {
         const windSpeed = weather.data[0].wind_spd;
         const windDirection = weather.data[0].wind_cdir_full;
         const humidity = weather.data[0].rh;
+        console.log(humidity);
         const clouds = weather.data[0].clouds;
+
+        // console.log(accessData('rh'));
+        // const precipitation = weather.data[0].pop;
+        // const highTemp = weather.data[0].max_temp;
+        // const lowTemp = weather.data[0].min_temp;
         // apiData = postData('/add', {country: country, city: city, departureDate: departureDate, temp: temp, summaryDescription: summaryDescription, precipitation: precipitation, highTemp: highTemp, lowTemp: lowTemp, code: code, remainingDays: remainingDays});
         apiData = postData('http://localhost:3000/add', {country: country, city: city, departureData: departureDate, temp: temp, summaryDescription: summaryDescription, windSpeed: windSpeed, windDirection: windDirection, humidity: humidity, clouds: clouds, code: code, remainingDays: remainingDays});
         return apiData;
@@ -291,7 +297,7 @@ function execute(e) {
         let windDirectionEntry = document.getElementById('windDirection');
 
         //humidity entry
-        insertElement('div', 'humidity response', 'humidityEntry', 'Relative Humidity: ' + Math.floor(apiData.humidity) + '%', windDirectionEntry, 'afterend');
+        insertElement('div', 'humidity response', 'humidityEntry', 'Relative Humidity: ' + apiData.humidity + '%', windDirectionEntry, 'afterend');
         let humidityEntry = document.getElementById('humidityEntry');
 
         //clouds entry
@@ -299,8 +305,8 @@ function execute(e) {
         let cloudsEntry = document.getElementById('cloudsEntry');
 
         //weather warning entry and icon
-        insertImage('weather response warning-icon warning', 'iconEntry', 'src', info, cloudsEntry, 'afterend');
-        let warningIcon = document.getElementById('iconEntry');
+        insertImage('weather response warning-icon warning', 'warningIcon', 'src', info, cloudsEntry, 'afterend');
+        let warningIcon = document.getElementById('warningIcon');
         let weatherWarning = document.createElement('div');
         warningIcon.insertAdjacentElement('afterend', weatherWarning);
 
