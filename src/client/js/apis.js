@@ -161,13 +161,13 @@ function execute(e) {
         let newDate = Client.formatDate(date);
         const returnDate = document.getElementById('return').value;
 
-        //insertDiv function
-        let insertDiv = (addClass, addID, text, prevElement, location) => {
-            let newDiv = document.createElement('div');
-            newDiv.className = `${addClass} response`;
-            newDiv.id = addID;
-            newDiv.innerHTML = `${text}`;
-            prevElement.insertAdjacentElement(location, newDiv);
+        //insertElement function
+        let insertElement = (element, addClass, addID, text, prevElement, location) => {
+            let newElement = document.createElement(element);
+            newElement.className = addClass;
+            newElement.id = addID;
+            newElement.innerHTML = `${text}`;
+            prevElement.insertAdjacentElement(location, newElement);
         }
 
         //insertContainer function
@@ -195,10 +195,13 @@ function execute(e) {
         // entryHolder.insertAdjacentElement('afterbegin', destinationContainer);
 
         //add destination header
-        let destinationHeader = document.createElement('h1');
-        destinationHeader.className = 'destination-header response';
-        destinationHeader.innerHTML = apiData.city + ',</br>' + fullCountryName;
-        destinationContainer.insertAdjacentElement('afterbegin', destinationHeader);
+        // let destinationHeader = document.createElement('h1');
+        // destinationHeader.className = 'destination-header response';
+        // destinationHeader.innerHTML = apiData.city + ',</br>' + fullCountryName;
+        // destinationContainer.insertAdjacentElement('afterbegin', destinationHeader);
+
+        insertElement('h1', 'destination-header response', 'destinationHeader', apiData.city + ',</br>' + fullCountryName, destinationContainer, 'afterbegin');
+        let destinationHeader = document.getElementById('destinationHeader');
 
         //add travel icon
         let travelIcon = document.createElement('img');
@@ -231,10 +234,13 @@ function execute(e) {
 
 
         //create 'your trip' header
-        let tripHeader = document.createElement('h1');
-        tripHeader.className = 'results-header';
-        tripHeader.innerHTML = 'Your Trip';
-        tripFlex.insertAdjacentElement('afterbegin', tripHeader);
+        // let tripHeader = document.createElement('h1');
+        // tripHeader.className = 'results-header';
+        // tripHeader.innerHTML = 'Your Trip';
+        // tripFlex.insertAdjacentElement('afterbegin', tripHeader);
+
+        insertElement('h1', 'results-header', 'tripHeader', 'Your Trip', tripFlex, 'afterbegin');
+        let tripHeader = document.getElementById('tripHeader');
 
         //add trip icon
         let tripIcon = document.createElement('img');
@@ -251,15 +257,15 @@ function execute(e) {
         let tripContainer = document.getElementById('tripContainer');
 
         //date entry
-        insertDiv('date', 'departureDate', 'Departure date: ' + newDate, tripContainer, 'afterbegin');
+        insertElement('div', 'date response', 'departureDate', 'Departure date: ' + newDate, tripContainer, 'afterbegin');
         let dateEntry = document.getElementById('departureDate');
 
         //return date entry
-        insertDiv('date', 'returnDate', 'Return date: ' + Client.formatDate(returnDate), dateEntry, 'afterend');
+        insertElement('div', 'date response', 'returnDate', 'Return date: ' + Client.formatDate(returnDate), dateEntry, 'afterend');
         let returnEntry = document.getElementById('returnDate');
 
         //days until departure entry
-        insertDiv('days', 'daysLeft', 'Days until your departure: ' + apiData.remainingDays, returnEntry, 'afterend');
+        insertElement('div', 'days response', 'daysLeft', 'Days until your departure: ' + apiData.remainingDays, returnEntry, 'afterend');
         let daysLeftEntry = document.getElementById('daysLeft');
 
         //duration entry
@@ -268,11 +274,11 @@ function execute(e) {
         let durationEntry = document.getElementById('duration');
 
         //city entry
-        insertDiv('city', 'cityEntry', 'Destination: ' + apiData.city, durationEntry, 'afterend');
+        insertElement('div', 'city response', 'cityEntry', 'Destination: ' + apiData.city, durationEntry, 'afterend');
         let cityEntry = document.getElementById('cityEntry');
 
         //country entry
-        insertDiv('country', 'countryEntry', 'Country: ' + fullCountryName, cityEntry, 'afterend');
+        insertElement('div', 'country response', 'countryEntry', 'Country: ' + fullCountryName, cityEntry, 'afterend');
         let countryEntry = document.getElementById('countryEntry');
 
         //country hover-warning and icon
@@ -296,10 +302,13 @@ function execute(e) {
         // tripFlex.insertAdjacentElement('afterend', weatherFlex);
 
         //weather header
-        let weatherHeader = document.createElement('h1');
-        weatherHeader.className = 'results-header';
-        weatherHeader.innerHTML = 'Weather';
-        weatherFlex.insertAdjacentElement('afterbegin', weatherHeader);
+        // let weatherHeader = document.createElement('h1');
+        // weatherHeader.className = 'results-header';
+        // weatherHeader.innerHTML = 'Weather';
+        // weatherFlex.insertAdjacentElement('afterbegin', weatherHeader);
+
+        insertElement('h1', 'results-header', 'weatherHeader', 'Weather', weatherFlex, 'afterbegin');
+        let weatherHeader = document.getElementById('weatherHeader');
 
         //weather icon
         let weatherIcon = document.createElement('img');
@@ -316,11 +325,11 @@ function execute(e) {
         // weatherHeader.insertAdjacentElement('afterend', weatherContainer);
 
         //temperature entry
-        insertDiv('temp', 'tempEntry', 'Temperature at destination: ' + apiData.temp + '&#176; F', weatherContainer, 'afterbegin');
+        insertElement('div', 'temp response', 'tempEntry', 'Temperature at destination: ' + apiData.temp + '&#176; F', weatherContainer, 'afterbegin');
         let weatherEntry = document.getElementById('tempEntry');
 
         //weather summary entry
-        insertDiv('weather', 'weatherEntry', 'General forecast at destination: ' + apiData.summaryDescription, weatherEntry, 'afterend');
+        insertElement('div', 'weather response', 'weatherEntry', 'General forecast at destination: ' + apiData.summaryDescription, weatherEntry, 'afterend');
         let tempEntry = document.getElementById('weatherEntry');
 
         //weather icon entry
@@ -331,19 +340,19 @@ function execute(e) {
         tempEntry.insertAdjacentElement('afterend', iconEntry);
 
         //wind speed entry
-        insertDiv('wind', 'windSpeed', 'Wind Speed: ' + apiData.windSpeed + ' mph', iconEntry, 'afterend');
+        insertElement('div', 'wind response', 'windSpeed', 'Wind Speed: ' + apiData.windSpeed + ' mph', iconEntry, 'afterend');
         let windSpeedEntry = document.getElementById('windSpeed');
 
         //wind direction entry
-        insertDiv('wind', 'windDirection', 'Wind Direction: ' + apiData.windDirection, windSpeedEntry, 'afterend');
+        insertElement('div', 'wind response', 'windDirection', 'Wind Direction: ' + apiData.windDirection, windSpeedEntry, 'afterend');
         let windDirectionEntry = document.getElementById('windDirection');
 
         //humidity entry
-        insertDiv('humidity', 'humidityEntry', 'Relative Humidity: ' + apiData.humidity + '%', windDirectionEntry, 'afterend');
+        insertElement('div', 'humidity response', 'humidityEntry', 'Relative Humidity: ' + apiData.humidity + '%', windDirectionEntry, 'afterend');
         let humidityEntry = document.getElementById('humidityEntry');
 
         //clouds entry
-        insertDiv('clouds', 'cloudsEntry', 'Cloud Coverage: ' + apiData.clouds + '%', humidityEntry, 'afterend');
+        insertElement('div', 'clouds response', 'cloudsEntry', 'Cloud Coverage: ' + apiData.clouds + '%', humidityEntry, 'afterend');
         let cloudsEntry = document.getElementById('cloudsEntry');
 
         //weather warning entry and icon
