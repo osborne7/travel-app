@@ -170,12 +170,22 @@ function execute(e) {
             prevElement.insertAdjacentElement(location, newElement);
         }
 
+        //add response to all classes for divs
+
         //insertContainer function
         let insertContainer = (addClass, addID, prevElement, location) => {
             let newContainer = document.createElement('div');
             newContainer.className = addClass;
             newContainer.id = addID;
             prevElement.insertAdjacentElement(location, newContainer);
+        }
+
+        let insertImage = (addClass, addID, attr1, attr2, prevElement, location) => {
+            let newImage = document.createElement('img');
+            newImage.className = addClass;
+            newImage.id = addID;
+            newImage.setAttribute(attr1, attr2);
+            prevElement.insertAdjacentElement(location, newImage);
         }
 
         // add containers
@@ -204,25 +214,41 @@ function execute(e) {
         let destinationHeader = document.getElementById('destinationHeader');
 
         //add travel icon
-        let travelIcon = document.createElement('img');
-        travelIcon.className = ('travel-icon icon');
-        travelIcon.setAttribute('src', travel);
-        destinationHeader.insertAdjacentElement('beforebegin', travelIcon);
+        // let travelIcon = document.createElement('img');
+        // travelIcon.className = ('travel-icon icon');
+        // travelIcon.setAttribute('src', travel);
+        // destinationHeader.insertAdjacentElement('beforebegin', travelIcon);
+
+
+        insertImage('travel-icon icon', 'travelIcon', 'src', travel, destinationHeader, 'beforebegin');
+        // let travelIcon = document.getElementById('travelIcon');
 
         // get country picture if there are no pictures available of city, add picture to UI
         if (pictureData.hits[0] === undefined) {
             const res = await fetch(pictureURL + pictureKey + '&q=' + replaceCountrySpaces + '&image_type=photo&pretty=true&category=travel');
             let countryPictureData = await res.json();
-            let countryImageEntry = document.createElement('img');
-            countryImageEntry.setAttribute('id', 'image');
-            countryImageEntry.setAttribute('src', countryPictureData.hits[0].webformatURL);
-            destinationHeader.insertAdjacentElement('afterend', countryImageEntry);
+
+            insertImage('class', 'image', 'src', countryPictureData.hits[0].webformatURL, destinationHeader, 'afterend');
+            // let countryImageEntry = document.getElementById('image');
+
+
+            // let countryImageEntry = document.createElement('img');
+            // countryImageEntry.setAttribute('id', 'image');
+            // countryImageEntry.setAttribute('src', countryPictureData.hits[0].webformatURL);
+            // destinationHeader.insertAdjacentElement('afterend', countryImageEntry);
         } else {
-            let imageEntry = document.createElement('img');
-            imageEntry.setAttribute('id', 'image');
-            imageEntry.setAttribute('src', pictureData.hits[0].webformatURL);
-            destinationHeader.insertAdjacentElement('afterend', imageEntry);
+            
+            insertImage('class', 'image', 'src', pictureData.hits[0].webformatURL, destinationHeader, 'afterend');
+            // let imageEntry = document.getElementById('image');
+
+
+
+            // let imageEntry = document.createElement('img');
+            // imageEntry.setAttribute('id', 'image');
+            // imageEntry.setAttribute('src', pictureData.hits[0].webformatURL);
+            // destinationHeader.insertAdjacentElement('afterend', imageEntry);
         }
+
 
         //add flex container for trip
         // let tripFlex = document.createElement('div');
@@ -243,10 +269,13 @@ function execute(e) {
         let tripHeader = document.getElementById('tripHeader');
 
         //add trip icon
-        let tripIcon = document.createElement('img');
-        tripIcon.className = ('side-icon icon');
-        tripIcon.setAttribute('src', destination);
-        tripHeader.insertAdjacentElement('beforebegin', tripIcon);
+        // let tripIcon = document.createElement('img');
+        // tripIcon.className = ('side-icon icon');
+        // tripIcon.setAttribute('src', destination);
+        // tripHeader.insertAdjacentElement('beforebegin', tripIcon);
+
+        insertImage('side-icon icon', 'tripIcon', 'src', destination, tripHeader, 'beforebegin');
+        // let tripIcon = document.getElementById('tripIcon');
 
         //add trip container
         // let tripContainer = document.createElement('div');
@@ -270,7 +299,7 @@ function execute(e) {
 
         //duration entry
         const duration = (`Trip duration: ${daysDifference(returnDate, newDate)} days`);
-        insertDiv('duration', 'duration', duration, daysLeftEntry, 'afterend');
+        insertElement('div', 'duration response', 'duration', duration, daysLeftEntry, 'afterend');
         let durationEntry = document.getElementById('duration');
 
         //city entry
@@ -282,12 +311,18 @@ function execute(e) {
         let countryEntry = document.getElementById('countryEntry');
 
         //country hover-warning and icon
+
+        insertImage('country warning-icon warning response', 'questionIcon', 'src', question, countryEntry, 'afterend');
+        let questionIcon = document.getElementById('questionIcon');
+
         let countryWarning = document.createElement('div');
-        let questionIcon = document.createElement('img');
-        questionIcon.className = ('country warning-icon warning response');
-        questionIcon.setAttribute('src', question);
-        countryEntry.insertAdjacentElement('afterend', questionIcon);
+        // let questionIcon = document.createElement('img');
+        // questionIcon.className = ('country warning-icon warning response');
+        // questionIcon.setAttribute('src', question);
+        // countryEntry.insertAdjacentElement('afterend', questionIcon);
         questionIcon.insertAdjacentElement('afterend', countryWarning);
+
+
 
         //hover functionality
         Client.mouseInCountry(questionIcon, countryWarning);
@@ -311,10 +346,13 @@ function execute(e) {
         let weatherHeader = document.getElementById('weatherHeader');
 
         //weather icon
-        let weatherIcon = document.createElement('img');
-        weatherIcon.className = ('side-icon response icon');
-        weatherIcon.setAttribute('src', weather);
-        weatherHeader.insertAdjacentElement('beforebegin', weatherIcon);
+        // let weatherIcon = document.createElement('img');
+        // weatherIcon.className = ('side-icon response icon');
+        // weatherIcon.setAttribute('src', weather);
+        // weatherHeader.insertAdjacentElement('beforebegin', weatherIcon);
+
+        insertImage('side-icon icon response', 'weatherIcon', 'src', weather, weatherHeader, 'beforebegin');
+        // let weatherIcon = document.getElementById('weatherIcon');
 
         //weather sub-container
         insertContainer('sub-container', 'weatherContainer', weatherHeader, 'afterend');
@@ -333,11 +371,15 @@ function execute(e) {
         let tempEntry = document.getElementById('weatherEntry');
 
         //weather icon entry
-        let iconEntry = document.createElement('img');
-        iconEntry.className = 'weather-icon response';
         let iconCode = apiData.code;
-        iconEntry.setAttribute('src', `/images/${iconCode}.png`);
-        tempEntry.insertAdjacentElement('afterend', iconEntry);
+        insertImage('weather-icon response', 'iconEntry', 'src', `/images/${iconCode}.png`, tempEntry, 'afterend');
+        let iconEntry = document.getElementById('iconEntry');
+
+
+        // let iconEntry = document.createElement('img');
+        // iconEntry.className = 'weather-icon response';
+        // iconEntry.setAttribute('src', `/images/${iconCode}.png`);
+        // tempEntry.insertAdjacentElement('afterend', iconEntry);
 
         //wind speed entry
         insertElement('div', 'wind response', 'windSpeed', 'Wind Speed: ' + apiData.windSpeed + ' mph', iconEntry, 'afterend');
@@ -356,11 +398,15 @@ function execute(e) {
         let cloudsEntry = document.getElementById('cloudsEntry');
 
         //weather warning entry and icon
+
+        insertImage('weather response warning-icon warning', 'iconEntry', 'src', info, cloudsEntry, 'afterend');
+        let warningIcon = document.getElementById('iconEntry');
+
         let weatherWarning = document.createElement('div');
-        let warningIcon = document.createElement('img');
-        warningIcon.className = ('weather response warning-icon warning');
-        warningIcon.setAttribute('src', info);
-        cloudsEntry.insertAdjacentElement('afterend', warningIcon);
+        // let warningIcon = document.createElement('img');
+        // warningIcon.className = ('weather response warning-icon warning');
+        // warningIcon.setAttribute('src', info);
+        // cloudsEntry.insertAdjacentElement('afterend', warningIcon);
         warningIcon.insertAdjacentElement('afterend', weatherWarning);
 
         //hover functionality
